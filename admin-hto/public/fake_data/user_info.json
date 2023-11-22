@@ -1,0 +1,31 @@
+{
+  "name": "Phạm Huy",
+  "age": 27,
+  "permissions": [
+    "user.screen.read",
+    "user.screen.create",
+    "user.screen.delete",
+    "user.screen.update",
+
+    "category.screen.read",
+    "category.screen.create",
+    "category.screen.delete",
+    "category.screen.update",
+
+    "group.screen.read",
+    "group.screen.create",
+    "group.screen.delete",
+    "group.screen.update",
+
+    "product.screen.read",
+    "product.screen.create",
+    "product.screen.delete",
+    "product.screen.update",
+
+    "permission.screen.read",
+    "permission.screen.create",
+    "permission.screen.delete",
+    "permission.screen.update"
+    
+  ]
+}

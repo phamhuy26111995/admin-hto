@@ -14,5 +14,6 @@ import org.hibernate.annotations.DynamicUpdate;
 public class ProductEntity extends BaseEntity {
     private String title;
     private String description;
+    private String code;
     private long categoryId;
 }

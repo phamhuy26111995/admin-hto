@@ -24,10 +24,10 @@ public class ProductController {
         return new ResponseEntity<>(productService.getAllProduct(), HttpStatus.OK);
     }
 
-    @GetMapping("/get-by-id/{id}")
-    public ResponseEntity<ProductDTO> getById(@PathVariable long id) {
+    @PostMapping("/get-by-id")
+    public ResponseEntity<ProductDTO> getById(@RequestBody ProductRequestDTO dto) {
 
-        return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
+        return new ResponseEntity<>(productService.getProductById(dto.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/create")

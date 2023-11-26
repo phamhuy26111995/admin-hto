@@ -12,7 +12,7 @@ import java.util.List;
 public class ProductDTO extends BaseDTO {
     private String title;
     private String description;
-
+    private String code;
     private List<ProductTabDTO> productTabDTOList;
 
 }

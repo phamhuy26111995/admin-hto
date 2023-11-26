@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductTabServiceImpl implements ProductTabService {
@@ -39,7 +38,7 @@ public class ProductTabServiceImpl implements ProductTabService {
 
             ProductTabEntity savedEntity = productTabRepository.save(entity);
 
-            List<TabContentDTO> tabContentDTOS =  tabContentService.save(productTab.getTabContents(), savedEntity.getId());
+            List<TabContentDTO> tabContentDTOS =  tabContentService.save(productTab.getAddedContents(), savedEntity.getId());
 
             ProductTabDTO dto = new ProductTabDTO();
             modelMapper.map(savedEntity, dto);
@@ -61,7 +60,7 @@ public class ProductTabServiceImpl implements ProductTabService {
 
             optional.ifPresent(entity -> {
                 ProductTabDTO dto = new ProductTabDTO();
-                List<TabContentDTO> tabContentDTOList = tabContentService.update(productTabRequestDTO.getRemovedContents(),productTabRequestDTO.getTabContents(),productTabRequestDTO.getEditContents(), productTabRequestDTO.getId());
+                List<TabContentDTO> tabContentDTOList = tabContentService.update(productTabRequestDTO.getRemovedContents(),productTabRequestDTO.getAddedContents(),productTabRequestDTO.getEditContents(), productTabRequestDTO.getId());
                 modelMapper.map(productTabRequestDTO, entity);
 
                 modelMapper.map(productTabRepository.save(entity), dto);

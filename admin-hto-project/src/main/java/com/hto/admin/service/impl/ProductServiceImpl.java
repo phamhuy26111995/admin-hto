@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
 
         ProductEntity savedEntity = productRepository.save(entity);
 
-        List<ProductTabDTO> productTabDTOList = productTabService.save(productRequestDTO.getProductTabs(), savedEntity.getId());
+        List<ProductTabDTO> productTabDTOList = productTabService.save(productRequestDTO.getAddedTabs(), savedEntity.getId());
 
         modelMapper.map(savedEntity, dto);
         dto.setProductTabDTOList(productTabDTOList);
@@ -92,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
 
             modelMapper.map(entity, dto);
 
-           productTabService.save(productRequestDTO.getProductTabs(), entity.getId());
+           productTabService.save(productRequestDTO.getAddedTabs(), entity.getId());
 
            productTabService.update(productRequestDTO.getEditedTabs(), entity.getId());
 

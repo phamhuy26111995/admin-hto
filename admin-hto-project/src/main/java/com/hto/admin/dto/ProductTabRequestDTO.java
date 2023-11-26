@@ -10,7 +10,8 @@ import java.util.List;
 @Data
 public class ProductTabRequestDTO extends BaseDTO{
     private String title;
-    private List<TabContentRequestDTO> tabContents = new ArrayList<>();
+    private String code;
+    private List<TabContentRequestDTO> addedContents = new ArrayList<>();
     private List<Long> removedContents = new ArrayList<>();
     private List<TabContentRequestDTO> editContents = new ArrayList<>();
     private long productId;

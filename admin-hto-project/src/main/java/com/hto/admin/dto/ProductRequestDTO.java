@@ -11,9 +11,10 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductRequestDTO extends BaseDTO{
     private String title;
+    private String code;
     private String description;
     private long categoryId;
-    private List<ProductTabRequestDTO> productTabs;
+    private List<ProductTabRequestDTO> addedTabs;
     private List<ProductTabRequestDTO> editedTabs;
     private List<Long> removedTabs;
 }

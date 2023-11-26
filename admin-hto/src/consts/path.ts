@@ -40,8 +40,8 @@ export const API_URL = {
   PRODUCT: {
     GET_ALL: `${api_url}/${prefix}/courses/search-all`,
     GET_BY_CONDITION: `${api_url}/${prefix}/courses/search`,
-    GET_DETAIL: `${api_url}/${prefix}/courses/detail`,
-    SAVE: `${api_url}/${prefix}/courses/save`,
+    GET_BY_ID: `${api_url}/${prefix}/product/get-by-id`,
+    CREATE: `${api_url}/${prefix}/product/create`,
     SAVE_CONTENT: `${api_url}/${prefix}/courses/save-content`,
     UPDATE: `${api_url}/${prefix}/courses/edit`,
     UPDATE_CONTENT: `${api_url}/${prefix}/courses/edit-content`,
@@ -53,5 +53,18 @@ export const API_URL = {
     SEARCH: `${api_url}/${prefix}/users/search`,
     INIT: `${api_url}/${prefix}/users/init`,
     SAVE: `${api_url}/${prefix}/users/save`,
+  },
+};
+
+export const APP_CONFIG = {
+  notificationConfig: (message: string = "", desc: string = "") : any => {
+    return {
+      placement: "topRight",
+      bottom: 50,
+      duration: 3,
+      rtl: true,
+      message: message,
+      description: desc,
+    };
   },
 };

@@ -24,37 +24,31 @@ const MainLayout = (props: any) => {
   const { setDisplayTheme } = props;
   const { permissions } = useSelector((state: any) => state.global);
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedMenu , setSelectedMenu] = useState([permissions[0]]);
- 
+  const [selectedMenu, setSelectedMenu] = useState([permissions[0]]);
+
   const location = useLocation();
 
-  useEffect(() => { 
-    if(permissions.length === 0) return;
+  useEffect(() => {
+    if (permissions.length === 0) return;
 
-    if(location.pathname === "/") {
-      setSelectedMenu([permissions[0]])
+    if (location.pathname === "/") {
+      setSelectedMenu([permissions[0]]);
       return;
     }
-    debugger
     const pathName = getPathNameFromPath(location.pathname);
 
-    if(!pathName) return;
+    if (!pathName) return;
 
-    const routes = permissions.filter((el : string) => el.includes(".read"));
+    const routes = permissions.filter((el: string) => el.includes(".read"));
 
-    routes.forEach((el : string) => {
-      if(el.includes(pathName)) {
+    routes.forEach((el: string) => {
+      if (el.includes(pathName)) {
         setSelectedMenu([el]);
         return;
       }
+    });
+  }, [location.pathname, permissions]);
 
-    })
-
-    
-  },[location.pathname, permissions])
-
-
- 
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -63,20 +57,20 @@ const MainLayout = (props: any) => {
     setDisplayTheme(checked);
   }
 
-  function getPathNameFromPath(path : string) {
+  function getPathNameFromPath(path: string) {
     // Sử dụng hàm split để tách chuỗi theo dấu '/'
-    const pathParts = path.split('/');
-  
+    const pathParts = path.split("/");
+
     // Lấy phần tử đầu tiên của mảng
     const pathName = pathParts[1]; // Index 1 là vị trí của "pathName"
-  
+
     if (pathName) {
       return pathName;
     }
-  
+
     return ""; // Trường hợp không tìm thấy "category"
   }
-  
+
   return (
     <Layout hasSider>
       <Sider
@@ -94,7 +88,7 @@ const MainLayout = (props: any) => {
             selectedKeys={selectedMenu}
             items={permissions.map((el: any) => {
               if (!MappingRoutes.get(el)) return;
-              
+
               if (MappingRoutes.get(el).isDisplayToLeftMenu) {
                 return MappingRoutes.get(el).menu;
               }
@@ -104,13 +98,9 @@ const MainLayout = (props: any) => {
       </Sider>
       <Layout className="site-layout">
         <Header
+          className="p-0 h-10 flex items-center justify-between"
           style={{
-            padding: 0,
             background: colorBgContainer,
-            height: 40,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
           }}
         >
           <div>
@@ -150,12 +140,11 @@ const MainLayout = (props: any) => {
           </div>
         </Header>
         <Content
-          style={{ margin: "10px 10px 0", overflow: "auto", height: "80vh" }}
+          className="mt-2 mx-2 mb-0 overflow-auto h-[80vh] relative"
         >
           <div
+            className="text-center p-6"
             style={{
-              padding: 24,
-              textAlign: "center",
               background: colorBgContainer,
             }}
           >

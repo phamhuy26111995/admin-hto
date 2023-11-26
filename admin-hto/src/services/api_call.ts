@@ -18,28 +18,28 @@ export const API_CALL = {
   //   }
   // },
 
-  // post: async (url, body) => {
-  //   let token = localStorage.getItem(ACCESS_TOKEN);
-  //   if (!token) {
-  //     redirect(PAGE_URL.LOGIN);
-  //     return;
-  //   }
-  //   try {
-  //     let response = await axios({
-  //       method: "POST",
-  //       url: url,
-  //       data: body,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     });
-  //
-  //     return response.data;
-  //   } catch (err) {
-  //     throw new Error(err);
-  //   }
-  // },
+  post: async (url : string, body : any) => {
+    // let token = localStorage.getItem(ACCESS_TOKEN);
+    // if (!token) {
+    //   redirect(PAGE_URL.LOGIN);
+    //   return;
+    // }
+    try {
+      let response = await axios({
+        method: "POST",
+        url: url,
+        data: body,
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: "Bearer " + token,
+        },
+      });
+  
+      return response.data;
+    } catch (err : any) {
+      throw new Error(err);
+    }
+  },
   //
   // put: async (url, body) => {
   //   let token = localStorage.getItem(ACCESS_TOKEN);

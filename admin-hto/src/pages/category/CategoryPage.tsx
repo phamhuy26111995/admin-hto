@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import {categoryService} from "@/services/category/category_services.ts";
+import { useDispatch } from 'react-redux';
+import { showHideLoading } from '@/redux-slice/globalSlice';
 
 
 const CategoryPage = () => {
 
-    useEffect(() => {
-        categoryService.getById(1);
-    },[])
+    const dispatch = useDispatch();
 
 
     return (

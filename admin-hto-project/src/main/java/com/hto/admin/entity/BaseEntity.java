@@ -17,27 +17,27 @@ public class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", updatable = false)
-    private Date createdAt;
+    protected Date createdAt;
 
     @CreatedBy
-    private long createdBy;
+    protected long createdBy;
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
-    private Date updatedAt;
+    protected Date updatedAt;
 
 
     @LastModifiedBy
-    private long updatedBy;
+    protected long updatedBy;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    protected boolean isDeleted;
 
-    private String status = "ACTIVE";
+    protected String status = "ACTIVE";
 }

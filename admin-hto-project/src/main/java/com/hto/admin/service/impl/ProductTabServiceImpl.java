@@ -62,7 +62,7 @@ public class ProductTabServiceImpl implements ProductTabService {
                 ProductTabDTO dto = new ProductTabDTO();
                 List<TabContentDTO> tabContentDTOList = tabContentService.update(productTabRequestDTO.getRemovedContents(),productTabRequestDTO.getAddedContents(),productTabRequestDTO.getEditContents(), productTabRequestDTO.getId());
                 modelMapper.map(productTabRequestDTO, entity);
-
+                entity.setProductId(productId);
                 modelMapper.map(productTabRepository.save(entity), dto);
 
                 dto.setTabContentDTOList(tabContentDTOList);

@@ -11,6 +11,8 @@ public interface ProductService {
 
     public List<ProductDTO> getAllProduct();
 
+    public List<ProductDTO> getProductByFilter(ProductRequestDTO dto);
+
     public ProductDTO getProductById(long productId);
     public ProductDTO save(ProductRequestDTO productRequestDTO);
 

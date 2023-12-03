@@ -30,6 +30,12 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductById(dto.getId()), HttpStatus.OK);
     }
 
+    @PostMapping("/get-by-filter")
+    public ResponseEntity<List<ProductDTO>> getByFilter(@RequestBody ProductRequestDTO dto) {
+
+        return new ResponseEntity<>(productService.getProductByFilter(dto), HttpStatus.OK);
+    }
+
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody ProductRequestDTO requestDTO) {
         productService.save(requestDTO);

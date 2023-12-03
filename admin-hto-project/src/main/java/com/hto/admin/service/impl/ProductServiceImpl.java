@@ -2,7 +2,7 @@ package com.hto.admin.service.impl;
 
 import com.hto.admin.dto.*;
 import com.hto.admin.entity.ProductEntity;
-import com.hto.admin.service.ProductRepository;
+import com.hto.admin.repository.ProductRepository;
 import com.hto.admin.service.ProductService;
 import com.hto.admin.service.ProductTabService;
 import com.hto.admin.service.TabContentService;
@@ -19,6 +19,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
     @Autowired
     private ProductTabService productTabService;
     @Autowired
@@ -40,6 +41,11 @@ public class ProductServiceImpl implements ProductService {
         });
         
         return dtos;
+    }
+
+    @Override
+    public List<ProductDTO> getProductByFilter(ProductRequestDTO dto) {
+        return productRepository.getProductByFilter(dto);
     }
 
     @Override

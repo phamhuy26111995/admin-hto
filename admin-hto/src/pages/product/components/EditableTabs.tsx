@@ -4,7 +4,7 @@ import {CloseOutlined} from "@ant-design/icons";
 import TabContent from "./TabContent";
 import {FormContext} from "@/context/FormProvider.tsx";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductDetail } from "@/redux-slice/productSlice";
+import { getProductDetail, setRemovedTabs } from "@/redux-slice/productSlice";
 import { productServices } from "@/services/product/product_services";
 
 
@@ -19,7 +19,7 @@ function EditableTabs(props : any) {
     const dispatch = useDispatch();
 
     
-    console.log(productTabs, tabContents);
+
 
     useEffect(() => {
         if(productTabs.length === 0) return;
@@ -43,6 +43,7 @@ function EditableTabs(props : any) {
         tabs.forEach((tab : any, index : number) => {
             if (tab.key === targetKey) {
                 lastIndex = index - 1;
+                dispatch(setRemovedTabs(tab.id || null))
             }
         });
         const newTabs = tabs.filter((tab : any) => tab.key !== targetKey);

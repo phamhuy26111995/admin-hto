@@ -38,13 +38,11 @@ export const API_URL = {
   },
 
   PRODUCT: {
-    GET_ALL: `${api_url}/${prefix}/courses/search-all`,
-    GET_BY_CONDITION: `${api_url}/${prefix}/courses/search`,
+    GET_ALL: `${api_url}/${prefix}/product/get-all`,
+    GET_BY_FILTER: `${api_url}/${prefix}/product/get-by-filter`,
     GET_BY_ID: `${api_url}/${prefix}/product/get-by-id`,
     CREATE: `${api_url}/${prefix}/product/create`,
-    SAVE_CONTENT: `${api_url}/${prefix}/courses/save-content`,
-    UPDATE: `${api_url}/${prefix}/courses/edit`,
-    UPDATE_CONTENT: `${api_url}/${prefix}/courses/edit-content`,
+    UPDATE: `${api_url}/${prefix}/product/update`,
   },
 
   USER: {

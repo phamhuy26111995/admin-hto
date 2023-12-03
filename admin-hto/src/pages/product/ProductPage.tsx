@@ -1,121 +1,171 @@
-import { Card, Col, Divider, Form, Input, Row, Space, Tag } from "antd";
+import { PAGE_URL } from "@/consts/path";
+import { clearState } from "@/redux-slice/productSlice";
+import { categoryService } from "@/services/category/category_services";
+import { productServices } from "@/services/product/product_services";
+import {
+  Card,
+  Col,
+  Divider,
+  Form,
+  Input,
+  Flex,
+  Row,
+  Space,
+  Tag,
+  Button,
+  Select,
+} from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import Table, { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { showHideLoading } from "@/redux-slice/globalSlice";
 
 interface DataType {
   key: string;
-  name: string;
-  age: number;
+  id: number | string;
+  title: string;
+  code: string;
   address: string;
   tags: string[];
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-  },
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_: any, record: any) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
-
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];
+const { Option } = Select;
 
 const ProductPage = () => {
+  const [productList, setProductList] = useState([]);
+  const [categoryList, setCategoryList] = useState<any>([]);
+  const categoryMap = useRef<any>(new Map());
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "Mã sản phẩm",
+      dataIndex: "code",
+      key: "code",
+      render: (text, record) => (
+        <Link to={`/product/${record.id}`}>{text}</Link>
+      ),
+    },
+    {
+      title: "Tên sản phẩm",
+      dataIndex: "title",
+      key: "title",
+    },
+    {
+      title: "Mô tả sản phẩm",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Danh mục",
+      dataIndex: "categoryId",
+      key: "category",
+      render: (columnData) => <p>{categoryMap.current.get(+columnData)}</p>,
+    },
+    {
+      title: "Hành động",
+      key: "action",
+      render: (_: any, record: any) => (
+        <Space size="middle">
+          <a>Delete</a>
+          <a>Ngưng hoạt động</a>
+        </Space>
+      ),
+    },
+  ];
+
+  useEffect(() => {
+    getProductAndCategory();
+
+    return () => {
+      dispatch(clearState({}));
+    };
+  }, []);
+
+  async function getProductAndCategory() {
+    const response = await productServices.getAll();
+    const categoryRes = await categoryService.getAll();
+    setProductList(
+      response.map((el: any) => ({
+        key: el.id,
+        ...el,
+      }))
+    );
+
+    categoryRes.unshift({
+      id: 0,
+      title: 'Tất cả'
+    })
+   setCategoryList(categoryRes)
+
+    
+    categoryRes.forEach((el: any) => categoryMap.current.set(el.id, el.title));
+  }
+
+  
+  
+  async function onSearch() {
+    const requestBody = form.getFieldsValue();
+    dispatch(showHideLoading(true))
+    const response = await productServices.getByFilter(requestBody);
+    dispatch(showHideLoading(false))
+
+    setProductList(
+      response.map((el: any) => ({
+        key: el.id,
+        ...el,
+      }))
+    );
+  }
+
   return (
     <React.Fragment>
-      <Card>
-        <Form>
-          <Row gutter={[16, 16]}>
-            <Col span={8}>
-              <Form.Item name={"productName"} label="Tên sản phẩm">
-                <Input />
+      <Card className="mb-4">
+        <Form form={form}>
+          <Flex gap={50}>
+            <Form.Item label="Mã sản phẩm" name={"code"}>
+              <Input />
+            </Form.Item>
+            <Form.Item label="Tên sản phẩm" name={"title"}>
+              <Input />
+            </Form.Item>
+            {categoryList.length > 0 && (
+              <Form.Item
+                initialValue={categoryList[0].id}
+                label="Danh mục"
+                name={"categoryId"}
+              >
+                <Select className="text-left min-w-[200px]">
+                  {categoryList.map((category: any) => (
+                    <Option key={category.id} value={category.id}>
+                      {category.title}
+                    </Option>
+                  ))}
+                </Select>
               </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item name={"productCode"} label="Mã sản phẩm">
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item name={"category"} label="Danh mục">
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item name={"description"} label="Mô tả sản phẩm">
-                <TextArea rows={4} />
-              </Form.Item>
-            </Col>
-          </Row>
+            )}
+            <Button icon={<SearchOutlined />} onClick={onSearch}>
+              Tìm kiếm
+            </Button>
+          </Flex>
         </Form>
       </Card>
-      <Divider />
       <Card>
-        <Table columns={columns} dataSource={data} />
+        <Flex className="mb-5" justify="end">
+          <Button
+            onClick={() =>
+              navigate(PAGE_URL.PRODUCT.DETAIL.replace(":id", "new"))
+            }
+          >
+            Thêm mới
+          </Button>
+        </Flex>
+        <Table columns={columns} dataSource={productList} />
       </Card>
     </React.Fragment>
   );

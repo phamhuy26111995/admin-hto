@@ -4,34 +4,12 @@ import React, { useContext, useEffect, useState } from "react";
 import FormProvider, { FormContext } from "@/context/FormProvider.tsx";
 import EditableTabs from "@/pages/product/components/EditableTabs.tsx";
 import { productServices } from "@/services/product/product_services";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createNewProduct, getProductDetail } from "@/redux-slice/productSlice";
 import { showHideLoading } from "@/redux-slice/globalSlice";
+import { getAllCategory } from "@/redux-slice/categorySlice";
 
 const { Option } = Select;
-
-const sampleProduct = {
-  id: 1,
-  name: "Du lịch 1",
-  code: "DL1",
-  categoryId: 1,
-  description: "Mô tả sản phẩm 1",
-  productTabs: [
-    {
-      id: 1,
-      title: "Quy định 1",
-      key: "DL1_PT1",
-      tabContents: [
-        {
-          id: 1,
-          title: "Nội dung quy định 1",
-          content: "Đây là Nội dung của quy định 1 nha",
-          type: "textarea",
-        },
-      ],
-    },
-  ],
-};
 
 const ProductCreatePage = () => {
   const [productForm] = Form.useForm();
@@ -41,11 +19,13 @@ const ProductCreatePage = () => {
     { key: "productCode0", title: "Default Tab", isEditing: false },
   ]);
   const [activeKey, setActiveKey] = useState("productCode0");
+  const { categoryList } = useSelector((state: any) => ({
+    ...state.categorySlice,
+  }));
 
   useEffect(() => {
-    // dispatch(showHideLoading(true))
-    dispatch(getProductDetail({id : 4}));
-  },[])
+    dispatch(getAllCategory());
+  }, []);
 
   async function submitFormData() {
     const productInfo = await productForm.validateFields();
@@ -64,10 +44,8 @@ const ProductCreatePage = () => {
       productTabs: tabData,
     };
 
-    dispatch(createNewProduct({}))
-    
+    dispatch(createNewProduct(requestBody));
   }
-
 
   return (
     <React.Fragment>
@@ -92,17 +70,22 @@ const ProductCreatePage = () => {
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item
-              rules={[{ required: true, message: "Không được để trống" }]}
-              label={"Danh mục"}
-              name="categoryId"
-            >
-              <Select>
-                <Option value={1}>Du học</Option>
-                <Option value={2}>Du lịch</Option>
-                <Option value={3}>Định cư</Option>
-              </Select>
-            </Form.Item>
+            {categoryList.length > 0 && (
+              <Form.Item
+                rules={[{ required: true, message: "Không được để trống" }]}
+                label={"Danh mục"}
+                name="categoryId"
+                initialValue={categoryList[0].id}
+              >
+                <Select className="text-left">
+                  {categoryList.map((category: any) => (
+                    <Option key={category.id} value={category.id}>
+                      {category.title}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            )}
           </Col>
           <Col span={16}>
             <Form.Item

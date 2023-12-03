@@ -10,6 +10,10 @@ const initialState = {
   productTabs: [],
   tabContents: undefined,
   product: undefined,
+  addedTabs : [],
+  removedTabs : [],
+  editedTabs : [],
+  removedContents : []
 };
 
 export const createNewProduct: any = createAsyncThunk(
@@ -29,6 +33,24 @@ export const createNewProduct: any = createAsyncThunk(
   }
 );
 
+export const updateProduct: any = createAsyncThunk(
+  "product/updateProduct",
+  async (body: any, thunkAPI) => {
+    thunkAPI.dispatch(showHideLoading(true));
+    try {
+      await productServices.update(body);
+      thunkAPI.dispatch(showHideLoading(false));
+      notification.success(
+        APP_CONFIG.notificationConfig("Update sản phẩm thành công")
+      );
+      thunkAPI.dispatch(getProductDetail({}));
+    } catch (err) {
+      thunkAPI.dispatch(showHideLoading(false));
+      notification.error(APP_CONFIG.notificationConfig("Có lỗi xảy ra"));
+    }
+  }
+);
+
 export const getProductDetail: any = createAsyncThunk(
   "product/getProductDetail",
   async (body: any, thunkAPI) => {
@@ -37,10 +59,6 @@ export const getProductDetail: any = createAsyncThunk(
       const response = await productServices.getById(body);
 
       thunkAPI.dispatch(showHideLoading(false));
-
-      notification.success(
-        APP_CONFIG.notificationConfig("Lấy product thành công")
-      );
       return response;
     } catch (err) {
       thunkAPI.dispatch(showHideLoading(false));
@@ -52,15 +70,26 @@ export const getProductDetail: any = createAsyncThunk(
 const productSlice: Slice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    setRemovedTabs(state : any , {payload}) {
+      if(payload !== null)
+      state.removedTabs = [...state.removedTabs, payload];
+    },
+    setRemovedContents(state : any , {payload}) {
+        if(payload !== null) 
+        state.removedContents = [...state.removedContents, payload];
+    },
+
+    clearState() {
+      return initialState;
+    }
+  },
   extraReducers(builder) {
     builder
-      // .addCase(createNewProduct.fulfilled, (state: any , {payload}) {
-
-      // })
       .addCase(getProductDetail.fulfilled, (state: any, { payload }) => {
         const tabContentMap: any = {};
-        state.productTabs = payload?.productTabDTOList.map(
+        state.product = payload;
+        state.productTabs = payload?.productTabDTOList?.map(
           (productTab: any) => {
             tabContentMap[`${payload.code}${productTab.id}`] =
               productTab?.tabContentDTOList;
@@ -72,13 +101,13 @@ const productSlice: Slice = createSlice({
               isEditing: false,
             };
           }
-        );
+        ) || [];
 
         state.tabContents = tabContentMap;
       });
   },
 });
 
-export const {} = productSlice.actions;
+export const {setRemovedTabs, clearState,setRemovedContents} = productSlice.actions;
 
 export default productSlice.reducer;

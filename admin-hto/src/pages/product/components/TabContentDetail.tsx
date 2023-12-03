@@ -3,18 +3,20 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { MinusCircleOutlined } from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
 import { FormContext } from "@/context/FormProvider.tsx";
+import { useDispatch } from "react-redux";
+import { setRemovedContents } from "@/redux-slice/productSlice";
 
 const { Option } = Select;
 
 function TabContentDetail(props: any) {
   const { keyProp, remove, tabContentKey } = props;
-  const firstTimeRef = useRef(false);
   const form: any = useContext(FormContext);
-  const inputTypeProp = form.getFieldValue(tabContentKey)[keyProp] || "textarea";
+  const formValue = form.getFieldValue(tabContentKey)[keyProp] || "textarea";
   const [inputType, setInputType] = useState("textarea");
   const [toggleValue, setToggleValue] = useState(
-    inputTypeProp.title === undefined && true
+    formValue.title === undefined && true
   );
+  const dispatch = useDispatch();
 
   function onChangeType(value: string) {
     setInputType(value);
@@ -25,19 +27,19 @@ function TabContentDetail(props: any) {
   }
 
   useEffect(() => {
-    setInputType(inputTypeProp.type);
-    // if(inputTypeProp.title && !firstTimeRef.current) {
-    //   setToggleValue(false)
-    //   firstTimeRef.current = true;
-    // }
-  }, [inputTypeProp]);
+    setInputType(formValue.type);
+  }, [formValue]);
 
   return (
     <div className="flex flex-col">
       <div className="">
         <Popconfirm
           title="Bạn có chắc chắn muốn đóng tab này không?"
-          onConfirm={() => remove(keyProp)}
+          onConfirm={() => {
+            remove(keyProp);
+            if (formValue.id)
+              dispatch(setRemovedContents(formValue.id));
+          }}
           okText="Có"
           cancelText="Không"
           placement="bottomLeft"
@@ -56,7 +58,7 @@ function TabContentDetail(props: any) {
             placeholder="Tiêu đề"
           />
 
-          {/* <span>{inputTypeProp.title}</span> */}
+          {/* <span>{formValue.title}</span> */}
         </Form.Item>
         <div className="flex items-center gap-5">
           <Form.Item
@@ -71,7 +73,11 @@ function TabContentDetail(props: any) {
               <TextArea placeholder="Nội dung" rows={4} />
             )}
           </Form.Item>
-          <Form.Item className="m-0" name={[keyProp, "type"]} initialValue={inputType}>
+          <Form.Item
+            className="m-0"
+            name={[keyProp, "type"]}
+            initialValue={inputType}
+          >
             <Select className="min-w-[100px]" onChange={onChangeType}>
               <Option value="text">Text</Option>
               <Option value="textarea">TextArea</Option>

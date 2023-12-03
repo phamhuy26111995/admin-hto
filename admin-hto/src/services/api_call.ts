@@ -41,29 +41,29 @@ export const API_CALL = {
     }
   },
   //
-  // put: async (url, body) => {
-  //   let token = localStorage.getItem(ACCESS_TOKEN);
-  //   if (!token) {
-  //     redirect(PAGE_URL.LOGIN);
-  //     return;
-  //   }
-  //
-  //   try {
-  //     let response = await axios({
-  //       method: "PUT",
-  //       url: url,
-  //       data: body,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     });
-  //
-  //     return response.data;
-  //   } catch (e) {
-  //     throw new Error(e.message);
-  //   }
-  // },
+  put: async (url : string, body : any) => {
+    // let token = localStorage.getItem(ACCESS_TOKEN);
+    // if (!token) {
+    //   redirect(PAGE_URL.LOGIN);
+    //   return;
+    // }
+  
+    try {
+      let response = await axios({
+        method: "PUT",
+        url: url,
+        data: body,
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: "Bearer " + token,
+        },
+      });
+  
+      return response.data;
+    } catch (e : any) {
+      throw new Error(e.message);
+    }
+  },
   //
   // postFormData: async (url, body) => {
   //   let token = localStorage.getItem(ACCESS_TOKEN);

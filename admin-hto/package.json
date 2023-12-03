@@ -12,7 +12,7 @@
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
     "@reduxjs/toolkit": "^1.9.7",
-    "antd": "^5.9.4",
+    "antd": "^5.11.5",
     "axios": "^1.5.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

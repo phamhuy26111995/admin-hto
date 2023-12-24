@@ -64,54 +64,54 @@ export const API_CALL = {
       throw new Error(e.message);
     }
   },
-  //
-  // postFormData: async (url, body) => {
-  //   let token = localStorage.getItem(ACCESS_TOKEN);
-  //   if (!token) {
-  //     redirect(PAGE_URL.LOGIN);
-  //     return;
-  //   }
-  //
-  //   try {
-  //     let response = await axios({
-  //       method: "POST",
-  //       url: url,
-  //       data: body,
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     });
-  //
-  //     return response;
-  //   } catch (e) {
-  //     throw new Error(e.message);
-  //   }
-  // },
-  //
-  // putFormData: async (url, body) => {
-  //   let token = localStorage.getItem(ACCESS_TOKEN);
-  //   if (!token) {
-  //     redirect(PAGE_URL.LOGIN);
-  //     return;
-  //   }
-  //
-  //   try {
-  //     let response = await axios({
-  //       method: "PUT",
-  //       url: url,
-  //       data: body,
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     });
-  //
-  //     return response;
-  //   } catch (e) {
-  //     throw new Error(e.message);
-  //   }
-  // },
+  
+  postFormData: async (url : string, body : any) => {
+    // let token = localStorage.getItem(ACCESS_TOKEN);
+    // if (!token) {
+    //   redirect(PAGE_URL.LOGIN);
+    //   return;
+    // }
+  
+    try {
+      let response = await axios({
+        method: "POST",
+        url: url,
+        data: body,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          // Authorization: "Bearer " + token,
+        },
+      });
+  
+      return response;
+    } catch (e : any) {
+      throw new Error(e.message);
+    }
+  },
+  
+  putFormData: async (url : string, body : any) => {
+    // let token = localStorage.getItem(ACCESS_TOKEN);
+    // if (!token) {
+    //   redirect(PAGE_URL.LOGIN);
+    //   return;
+    // }
+  
+    try {
+      let response = await axios({
+        method: "PUT",
+        url: url,
+        data: body,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          // Authorization: "Bearer " + token,
+        },
+      });
+  
+      return response;
+    } catch (e : any) {
+      throw new Error(e.message);
+    }
+  },
 
   get: async (url : string, body : any) => {
     // let token = localStorage.getItem(ACCESS_TOKEN);
@@ -123,6 +123,31 @@ export const API_CALL = {
     try {
       response = await axios({
         method: "GET",
+        url: url,
+        data: body,
+        headers: {
+          "Content-Type": "application/json",/**/
+          "Access-Control-Allow-Origin": "*"
+          // Authorization: "Bearer " + token,
+        },
+      });
+
+      return response.data;
+    } catch (e : any) {
+      throw new Error(e.message);
+    }
+  },
+
+  delete: async (url : string, body : any) => {
+    // let token = localStorage.getItem(ACCESS_TOKEN);
+    // if (!token) {
+    //   redirect(PAGE_URL.LOGIN);
+    //   return;
+    // }
+    let response = null;
+    try {
+      response = await axios({
+        method: "DELETE",
         url: url,
         data: body,
         headers: {

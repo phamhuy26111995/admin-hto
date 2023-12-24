@@ -4,6 +4,7 @@ import PermissionPage from "@/pages/permission/PermissionPage";
 import ProductCreatePage from "@/pages/product/ProductCreatePage";
 import ProductDetailPage from "@/pages/product/ProductDetailPage";
 import ProductPage from "@/pages/product/ProductPage";
+import UserCreatePage from "@/pages/user/UserCreatePage";
 import UserDetailPage from "@/pages/user/UserDetailPage";
 import UserPage from "@/pages/user/UserPage";
 import {
@@ -20,7 +21,7 @@ export const MappingRoutes = new Map();
 MappingRoutes.set("permission.screen.read", {
   component: <PermissionPage />,
   path: "/permission",
-  isDisplayToLeftMenu : true,
+  isDisplayToLeftMenu : false,
   menu: {
     key: "permission.screen.read",
     label: "Phân quyền",
@@ -49,7 +50,7 @@ MappingRoutes.set("user.screen.read", {
   });
 
   MappingRoutes.set("user.screen.create", {
-    component: <UserDetailPage />,
+    component: <UserCreatePage />,
     path: "/user/new",
     isDisplayToLeftMenu : false,
     menu: {
@@ -146,7 +147,7 @@ MappingRoutes.set("user.screen.read", {
   MappingRoutes.set("group.screen.read", {
     component: <GroupPage />,
     path: "/group",
-    isDisplayToLeftMenu : true,
+    isDisplayToLeftMenu : false,
     menu: {
       key: "group.screen.read",
       label: "Nhóm",

@@ -9,10 +9,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long>, UserRepositoryCustom {
 
     @Query("SELECT new com.hto.admin.dto.UserDTO(u.id" +
             ", u.name" +
+            ", u.code" +
             ", u.username" +
             ", u.image" +
             ", u.email" +

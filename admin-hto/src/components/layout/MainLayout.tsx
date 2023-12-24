@@ -22,7 +22,7 @@ const { Header, Sider, Content } = Layout;
 
 const MainLayout = (props: any) => {
   const { setDisplayTheme } = props;
-  const { permissions } = useSelector((state: any) => state.global);
+  const { permissions } = useSelector((state: any) => state.userSlice);
   const [collapsed, setCollapsed] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState([permissions[0]]);
 
@@ -32,18 +32,18 @@ const MainLayout = (props: any) => {
     if (permissions.length === 0) return;
 
     if (location.pathname === "/") {
-      setSelectedMenu([permissions[0]]);
+      setSelectedMenu([permissions[0].code]);
       return;
     }
     const pathName = getPathNameFromPath(location.pathname);
 
     if (!pathName) return;
 
-    const routes = permissions.filter((el: string) => el.includes(".read"));
+    const routes = permissions.filter((el: any) => el.code.includes(".read"));
 
-    routes.forEach((el: string) => {
-      if (el.includes(pathName)) {
-        setSelectedMenu([el]);
+    routes.forEach((el: any) => {
+      if (el.code.includes(pathName)) {
+        setSelectedMenu([el.code]);
         return;
       }
     });
@@ -87,10 +87,10 @@ const MainLayout = (props: any) => {
             mode="inline"
             selectedKeys={selectedMenu}
             items={permissions.map((el: any) => {
-              if (!MappingRoutes.get(el)) return;
+              if (!MappingRoutes.get(el.code)) return;
 
-              if (MappingRoutes.get(el).isDisplayToLeftMenu) {
-                return MappingRoutes.get(el).menu;
+              if (MappingRoutes.get(el.code).isDisplayToLeftMenu) {
+                return MappingRoutes.get(el.code).menu;
               }
             })}
           />

@@ -17,6 +17,7 @@ import java.util.Date;
 @DynamicUpdate
 public class UserEntity extends BaseEntity implements UserDetails {
     private String name;
+    private String code;
     private String username;
     private String image;
     private String email;

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.Instant;
@@ -18,7 +19,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Slf4j
-@Component
+@Service
 public class JwtUtilities{
 
 
@@ -83,7 +84,8 @@ public class JwtUtilities{
     public String getToken (HttpServletRequest httpServletRequest) {
          final String bearerToken = httpServletRequest.getHeader("Authorization");
          if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer "))
-         {return bearerToken.substring(7); } // The part after "Bearer "
+             return bearerToken.substring(7);
+          // The part after "Bearer "
          return null;
     }
 

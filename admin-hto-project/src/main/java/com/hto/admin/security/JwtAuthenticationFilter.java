@@ -31,7 +31,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String token = jwtUtilities.getToken(request);
-        if (token != null && jwtUtilities.validateToken(token)) {
+        if(token == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if (jwtUtilities.validateToken(token)) {
             String username = jwtUtilities.extractUsername(token);
 
             UserDetails userDetails = customerUserDetailsService.loadUserByUsername(username);
@@ -43,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             }
         }
-        filterChain.doFilter(request, response);
+
     }
 
 }

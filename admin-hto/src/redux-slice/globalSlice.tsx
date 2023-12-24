@@ -10,6 +10,8 @@ const initialState = {
   permissions: [],
 };
 
+
+
 export const globalSlice: Slice = createSlice({
   name: "global",
   initialState,

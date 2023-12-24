@@ -6,8 +6,10 @@ import com.hto.admin.dto.UserRequestDTO;
 import com.hto.admin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,12 +28,30 @@ public class UserController {
 
     @GetMapping("{id}")
     public ResponseEntity<UserDTO> getById(@PathVariable long id) {
-        return new ResponseEntity<>(userService.getUserById(id) , HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Long> createUser(@RequestBody UserRequestDTO userRequestDTO) {
+    @PostMapping("/get-by-filter")
+    public ResponseEntity<List<UserDTO>> getByFilter(@RequestBody UserRequestDTO requestDTO) {
 
-        return new ResponseEntity<>(userService.createUser(userRequestDTO),HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.getUserByFilter(requestDTO), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Long> createUser(@RequestPart("userRequestDTO") UserRequestDTO userRequestDTO, MultipartFile image) {
+
+        return new ResponseEntity<>(userService.createUser(userRequestDTO, image), HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Long> updateUser(@RequestPart("userRequestDTO") UserRequestDTO userRequestDTO, MultipartFile newImage) {
+
+        return new ResponseEntity<>(userService.updateUser(userRequestDTO, newImage), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

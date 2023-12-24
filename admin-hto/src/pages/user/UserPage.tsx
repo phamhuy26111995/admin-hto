@@ -1,6 +1,9 @@
-import { Button, Space, Table } from "antd";
-import React from "react";
+import { getUserByFilter } from "@/redux-slice/userSlice";
+import { Button, Card, Flex, Form, Input, Space, Table } from "antd";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { SearchOutlined } from "@ant-design/icons";
 
 const data = [
   {
@@ -28,21 +31,60 @@ const data = [
 
 const UserPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [form] = Form.useForm();
+  const { userList } = useSelector((state: any) => ({
+    ...state.userSlice,
+  }));
+
+  useEffect(() => {
+    dispatch(getUserByFilter({}));
+  }, []);
+
+  async function onSearch() {
+    const formValue = await form.validateFields();
+
+    dispatch(getUserByFilter(formValue))
+  }
 
   return (
     <React.Fragment>
-      <Table size="small" dataSource={data}>
-        <Table.Column dataIndex={"name"} title="Họ Tên" />
-        <Table.Column dataIndex={"age"} title="Tuổi" />
-        <Table.Column dataIndex={"address"} title="Địa chỉ" />
-        <Table.Column dataIndex={"tags"} title="Tags" />
+      <Card className="mb-4">
+        <Form form={form}>
+          <Flex gap={50}>
+            <Form.Item label="Mã nhân viên" name={"code"}>
+              <Input />
+            </Form.Item>
+            <Form.Item label="Tên nhân viên" name={"name"}>
+              <Input />
+            </Form.Item>
+            <Form.Item label="Email" name={"email"}>
+              <Input />
+            </Form.Item>
+            <Form.Item label="Username" name={"username"}>
+              <Input />
+            </Form.Item>
+
+            <Button icon={<SearchOutlined />} onClick={onSearch}>
+              Tìm kiếm
+            </Button>
+          </Flex>
+        </Form>
+      </Card>
+      <Table size="small" dataSource={userList}>
+        <Table.Column dataIndex={"code"} title="Mã nhân viên" />
+        <Table.Column dataIndex={"name"} title="Tên nhân viên" />
+        <Table.Column dataIndex={"birthday"} title="Ngày sinh" />
+        <Table.Column dataIndex={"phone"} title="Số điện thoại" />
+        <Table.Column dataIndex={"email"} title="Email" />
+        <Table.Column dataIndex={"username"} title="Username" />
         <Table.Column
           title="Hành động"
           render={(_, record: any) => (
             <Space size="middle">
               <Button
                 className="bg-cyan-400 text-white"
-                onClick={() => navigate(`${record.key}`)}
+                onClick={() => navigate(`/user/${record.id}`)}
               >
                 Chỉnh sửa thông tin user
               </Button>

@@ -46,11 +46,13 @@ export const API_URL = {
   },
 
   USER: {
-    GET_CURRENT: `${api_url}/${prefix}/users/get-current-user`,
-    GET_DETAIL: `${api_url}/${prefix}/users/detail`,
-    SEARCH: `${api_url}/${prefix}/users/search`,
-    INIT: `${api_url}/${prefix}/users/init`,
-    SAVE: `${api_url}/${prefix}/users/save`,
+    GET_ALL: `${api_url}/${prefix}/user/get-all`,
+    GET_BY_FILTER: `${api_url}/${prefix}/user/get-by-filter`,
+    GET_BY_ID: `${api_url}/${prefix}/user/:id`,
+    CREATE: `${api_url}/${prefix}/user/create`,
+    UPLOAD: `${api_url}/${prefix}/file/upload`,
+    UPDATE: `${api_url}/${prefix}/user/update`,
+    DELETE: `${api_url}/${prefix}/user/delete`,
   },
 };
 

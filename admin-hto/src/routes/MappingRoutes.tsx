@@ -1,4 +1,6 @@
+import CategoryDetailPage from "@/pages/category/CategoryDetailPage";
 import CategoryPage from "@/pages/category/CategoryPage";
+import CreateCategoryPage from "@/pages/category/CreateCategoryPage";
 import GroupPage from "@/pages/group/GroupPage";
 import PermissionPage from "@/pages/permission/PermissionPage";
 import ProductCreatePage from "@/pages/product/ProductCreatePage";
@@ -137,6 +139,36 @@ MappingRoutes.set("user.screen.read", {
       label: "Danh mục",
       icon: (
         <Link to={"/category"}>
+          <BookOutlined />
+        </Link>
+      ),
+    },
+  });
+
+  MappingRoutes.set("category.screen.create", {
+    component: <CreateCategoryPage />,
+    path: "/category/new",
+    isDisplayToLeftMenu : false,
+    menu: {
+      key: "category.screen.read",
+      label: "Danh mục",
+      icon: (
+        <Link to={"/category/new"}>
+          <BookOutlined />
+        </Link>
+      ),
+    },
+  });
+
+  MappingRoutes.set("category.screen.update", {
+    component: <CategoryDetailPage />,
+    path: "/category/:id",
+    isDisplayToLeftMenu : false,
+    menu: {
+      key: "category.screen.read",
+      label: "Danh mục",
+      icon: (
+        <Link to={"/category/:id"}>
           <BookOutlined />
         </Link>
       ),

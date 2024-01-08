@@ -38,7 +38,7 @@ public class UserPermissionServiceImpl implements UserPermissionService {
     public void update(List<PermissionDTO> removed, List<PermissionDTO> added, long userId) {
 
         removed.forEach(removePermission -> {
-            List<UserPermissionEntity> removeEntity = repository.findAllByUserIdAndPermissionId(removePermission.getId(), userId);
+            List<UserPermissionEntity> removeEntity = repository.findAllByUserIdAndPermissionId(userId, removePermission.getId());
 
             repository.deleteAll(removeEntity);
 
@@ -55,7 +55,7 @@ public class UserPermissionServiceImpl implements UserPermissionService {
 
     @Override
     public void delete(long userId, long permissionId) {
-        List<UserPermissionEntity> userPermissionEntities = repository.findAllByUserIdAndPermissionId(userId,permissionId);
+        List<UserPermissionEntity> userPermissionEntities = repository.findAllByUserIdAndPermissionId(userId, permissionId);
 
         repository.deleteAll(userPermissionEntities);
     }

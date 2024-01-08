@@ -14,6 +14,9 @@ public interface UserService {
 
     public UserDTO getUserById(long id);
 
+    public UserDTO getUserAdmin();
+
+
     public List<UserDTO> getUserByFilter(UserRequestDTO requestDTO);
 
     public long createUser(UserRequestDTO requestDTO, MultipartFile userImage);
@@ -23,6 +26,8 @@ public interface UserService {
     public void deleteUser(long id);
 
     String authenticate(LoginDto loginDto);
+
+    String fakeLogin(LoginDto loginDto);
 
     Optional<UserEntity> findUserByUsername(String username);
 }

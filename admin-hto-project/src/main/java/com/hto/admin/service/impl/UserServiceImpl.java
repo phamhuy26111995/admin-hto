@@ -1,6 +1,7 @@
 package com.hto.admin.service.impl;
 
 import com.hto.admin.dto.LoginDto;
+import com.hto.admin.dto.PermissionDTO;
 import com.hto.admin.dto.UserDTO;
 import com.hto.admin.dto.UserRequestDTO;
 import com.hto.admin.entity.UserEntity;
@@ -65,6 +66,22 @@ public class UserServiceImpl implements UserService {
         dto.setUserPermission(permissionService.getPermissionByUser(userEntity.getId()));
 
         return dto;
+    }
+
+    @Override
+    public UserDTO getUserAdmin() {
+        List<UserDTO> userDTOS = userRepository.getUserAdmin();
+
+        if (!userDTOS.isEmpty()) {
+            UserDTO userDTO = userDTOS.get(0);
+
+            List<PermissionDTO> userPermission = permissionService.getPermissionByUser(userDTO.getId());
+
+            userDTO.setUserPermission(userPermission);
+
+            return userDTO;
+        }
+        return new UserDTO();
     }
 
     @Override
@@ -142,6 +159,14 @@ public class UserServiceImpl implements UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserEntity user = iUserRepository.findByUsername(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return jwtUtilities.generateToken(user.getUsername());
+    }
+
+    @Override
+    public String fakeLogin(LoginDto loginDto) {
+        if (!loginDto.getUsername().equals("admin")
+                || !loginDto.getPassword().equals("admin")) return "LOGIN_FAILED";
+
+        return "fake_token";
     }
 
     @Override

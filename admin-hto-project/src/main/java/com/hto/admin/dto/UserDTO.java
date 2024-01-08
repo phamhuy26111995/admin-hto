@@ -19,10 +19,11 @@ public class UserDTO extends BaseDTO {
     private String phone;
     private Date birthday;
     private List<PermissionDTO> userPermission;
+    private String role;
 
-    public UserDTO(long id, String name,String code,String username, String image, String email, String phone
+    public UserDTO(long id, String name, String code, String username, String image, String email, String phone
             , Date birthday, Date createdAt, long createdBy
-            , Date updatedAt, long updatedBy, String status) {
+            , Date updatedAt, long updatedBy, String status, String role) {
         super.setId(id);
         this.name = name;
         this.code = code;
@@ -31,6 +32,7 @@ public class UserDTO extends BaseDTO {
         this.email = email;
         this.phone = phone;
         this.birthday = birthday;
+        this.role = role;
         super.setCreatedAt(createdAt);
         super.setCreatedBy(createdBy);
         super.setUpdatedAt(updatedAt);

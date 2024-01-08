@@ -1,8 +1,11 @@
+import { API_URL } from '@/consts/path';
 import axios from 'axios';
 
 
 const authService = {
     login,
+    fakeLogin,
+    getUserAdmin
 }
 
 const API_CALL  = {
@@ -24,7 +27,17 @@ const API_CALL  = {
 
 function login(body : any) {
     
-   return API_CALL.noAuth("/fake_data/login_info", body);
+   return API_CALL.noAuth(API_URL.AUTH.FAKE_LOGIN, body);
+}
+
+function fakeLogin(body : any) {
+    
+  return API_CALL.noAuth(API_URL.AUTH.FAKE_LOGIN, body);
+}
+
+function getUserAdmin() {
+    
+  return API_CALL.noAuth(API_URL.AUTH.GET_USER_ADMIN, {});
 }
 
 export default authService;

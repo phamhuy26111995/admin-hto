@@ -31,10 +31,10 @@ function UserCreatePage() {
 
     const requestBody = new FormData();
 
-    requestBody.append(
-      "file",
-      fileList.length > 0 ? fileList[0].originFileObj : null
-    );
+    // requestBody.append(
+    //   "file",
+    //   fileList.length > 0 ? fileList[0].originFileObj : null
+    // );
 
     // Chuyển đổi jsonBody thành chuỗi JSON
     requestBody.append(

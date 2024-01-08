@@ -23,7 +23,43 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, UserRep
             ", u.createdBy" +
             ", u.updatedAt" +
             ", u.updatedBy" +
-            ", u.status) " +
+            ", u.status" +
+            ", u.role) " +
             "FROM UserEntity u")
     List<UserDTO> getAllUser();
+
+    @Query("SELECT new com.hto.admin.dto.UserDTO(u.id" +
+            ", u.name" +
+            ", u.code" +
+            ", u.username" +
+            ", u.image" +
+            ", u.email" +
+            ", u.phone" +
+            ", u.birthday " +
+            ", u.createdAt" +
+            ", u.createdBy" +
+            ", u.updatedAt" +
+            ", u.updatedBy" +
+            ", u.status" +
+            ", u.role) " +
+            "FROM UserEntity u WHERE u.role != 'ROLE_ADMIN' AND u.status = 'ACTIVE'")
+    List<UserDTO> getAllUserNotAdmin();
+
+
+    @Query("SELECT new com.hto.admin.dto.UserDTO(u.id" +
+            ", u.name" +
+            ", u.code" +
+            ", u.username" +
+            ", u.image" +
+            ", u.email" +
+            ", u.phone" +
+            ", u.birthday " +
+            ", u.createdAt" +
+            ", u.createdBy" +
+            ", u.updatedAt" +
+            ", u.updatedBy" +
+            ", u.status" +
+            ", u.role) " +
+            "FROM UserEntity u WHERE u.role = 'ROLE_ADMIN' AND u.status = 'ACTIVE' ")
+    List<UserDTO> getUserAdmin();
 }

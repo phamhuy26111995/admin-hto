@@ -17,8 +17,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     @Override
     public List<UserDTO> getUserByFilter(UserRequestDTO requestDTO) {
-        String queryString = "SELECT new com.hto.admin.dto.UserDTO(u.id, u.name, u.code, u.username, u.image, u.email, u.phone, u.birthday, u.createdAt, u.createdBy, u.updatedAt, u.updatedBy, u.status) " +
-                "FROM UserEntity u WHERE u.status = 'ACTIVE' AND u.isDeleted = false ";
+        String queryString = "SELECT new com.hto.admin.dto.UserDTO(u.id, u.name, u.code, u.username, u.image, u.email, u.phone, u.birthday, u.createdAt, u.createdBy, u.updatedAt, u.updatedBy, u.status,u.role) " +
+                "FROM UserEntity u WHERE u.status = 'ACTIVE' AND u.isDeleted = false AND u.role != 'ROLE_ADMIN' ";
 
 
         StringBuilder queryBuilder = new StringBuilder(queryString);

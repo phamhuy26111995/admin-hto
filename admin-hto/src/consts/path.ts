@@ -27,6 +27,8 @@ export const PAGE_URL = {
 export const API_URL = {
   AUTH: {
     LOGIN: `${api_url}/${prefix}/auth/login`,
+    FAKE_LOGIN: `${api_url}/${prefix}/login/fake-login`,
+    GET_USER_ADMIN: `${api_url}/${prefix}/login/get-user-admin`,
   },
 
   CATEGORY: {

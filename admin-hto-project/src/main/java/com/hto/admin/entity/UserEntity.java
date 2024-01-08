@@ -1,6 +1,8 @@
 package com.hto.admin.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.DynamicUpdate;
@@ -24,6 +26,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private String phone;
     private Date birthday;
     private String password;
+    private String role;
 
     @Override
     @Transient

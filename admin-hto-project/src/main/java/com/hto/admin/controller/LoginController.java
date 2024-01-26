@@ -3,12 +3,10 @@ package com.hto.admin.controller;
 import com.hto.admin.consts.Consts;
 import com.hto.admin.dto.LoginDto;
 import com.hto.admin.dto.UserDTO;
-import com.hto.admin.entity.UserEntity;
 import com.hto.admin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -40,9 +38,8 @@ public class LoginController {
     }
 
     @GetMapping("/user-info")
-    public UserEntity getUserLoginInfo() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userService.findUserByUsername(auth.getPrincipal().toString()).orElse(null);
+    public String getUserLoginInfo(Authentication authentication) {
+        return authentication.getName();
     }
 
 }

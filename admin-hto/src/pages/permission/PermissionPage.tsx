@@ -13,7 +13,7 @@ const PermissionPage = () => {
 
   return (
     <React.Fragment>
-      <Tabs
+      {/* <Tabs
     defaultActiveKey={"1"}
     items={[<GroupPermission />, <UserPermission />].map((component, i) => {
       const id = String(i + 1);
@@ -28,7 +28,9 @@ const PermissionPage = () => {
         children: component,
       };
     })}
-  />
+  /> */}
+
+    <h1>Permission Page</h1>
     </React.Fragment>
   );
 };

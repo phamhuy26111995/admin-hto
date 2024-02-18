@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import MainLayout from "@/components/layout/MainLayout";
 import { Skeleton } from "antd";
 import { setUserInfo } from "@/redux-slice/globalSlice";
+import { JWT_TOKEN } from "@/consts/common";
 
 const PrivateRoutes = (props: any) => {
   let { setDisplayTheme } = props;
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem(JWT_TOKEN);
 
   let loading = useSelector((state: any) => state.global.loading);
 

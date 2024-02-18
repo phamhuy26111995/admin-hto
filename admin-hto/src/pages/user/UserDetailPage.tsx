@@ -48,6 +48,9 @@ const UserDetailPage = (props: any) => {
       code: currentUser.code,
       birthday: dayjs(currentUser.birthday),
       status: currentUser.status,
+      phone : currentUser.phone,
+      email : currentUser.email,
+      username : currentUser.username
     });
     setFileList(currentUser.fileList);
   }, [currentUser]);

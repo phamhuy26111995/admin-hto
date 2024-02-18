@@ -1,33 +1,41 @@
 const prefix = "api/v1/admin";
+const public_prefix = "api/v1/public";
+const root_prefix = "api/v1/root";
 const api_url = "http://localhost:8080";
 
 export const PAGE_URL = {
   ALL: "*",
   HOME: "/",
   TEST: "/test",
+  PROFILE : {
+    INDEX : "/profile"
+  },
   PRODUCT: {
     INDEX: "/product",
     DETAIL: "/product/:id",
+    NEW : "/product/new"
   },
   LOGIN: "/login",
   CATEGORY: {
     INDEX: "/category",
     DETAIL: "/category/:id",
+    NEW : "/category/new"
   },
   USER: {
     INDEX: "/user",
-    DETAIL: "/user/:id",
+    DETAIL: "/user/:userId",
+    NEW : "/user/new"
   },
   PERMISSION: {
     INDEX: "/permission",
     DETAIL: "/permission/:id",
+    NEW : "/permission/new"
   },
 };
 
 export const API_URL = {
   AUTH: {
-    LOGIN: `${api_url}/${prefix}/auth/login`,
-    FAKE_LOGIN: `${api_url}/${prefix}/login/fake-login`,
+    LOGIN: `${api_url}/${prefix}/login/authenticate`,
     GET_USER_ADMIN: `${api_url}/${prefix}/login/get-user-admin`,
   },
 
@@ -50,10 +58,12 @@ export const API_URL = {
   USER: {
     GET_ALL: `${api_url}/${prefix}/user/get-all`,
     GET_BY_FILTER: `${api_url}/${prefix}/user/get-by-filter`,
+    GET_USER_BY_USERNAME : `${api_url}/${prefix}/user/get-by-username/:username`,
     GET_BY_ID: `${api_url}/${prefix}/user/:id`,
     CREATE: `${api_url}/${prefix}/user/create`,
     UPLOAD: `${api_url}/${prefix}/file/upload`,
     UPDATE: `${api_url}/${prefix}/user/update`,
+    UPDATE_PROFILE: `${api_url}/${public_prefix}/user-profile/update`,
     DELETE: `${api_url}/${prefix}/user/delete`,
   },
 };

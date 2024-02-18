@@ -1,9 +1,8 @@
 package com.hto.admin.service.impl;
 
-import com.hto.admin.dto.LoginDto;
-import com.hto.admin.dto.PermissionDTO;
-import com.hto.admin.dto.UserDTO;
-import com.hto.admin.dto.UserRequestDTO;
+import com.hto.admin.consts.Role;
+import com.hto.admin.consts.UserStatus;
+import com.hto.admin.dto.*;
 import com.hto.admin.entity.UserEntity;
 import com.hto.admin.repository.IUserRepository;
 import com.hto.admin.repository.UserRepository;
@@ -85,6 +84,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO getUserByUserName(String username) {
+        String usernameParam = username;
+
+        if (username.equals("token")) {
+            CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            usernameParam = userDetails.getUsername();
+        }
+
+        List<UserDTO> userDTOS = userRepository.getUserByUserName(usernameParam);
+
+        if (!userDTOS.isEmpty()) {
+            UserDTO userDTO = userDTOS.get(0);
+
+            List<PermissionDTO> userPermission = permissionService.getPermissionByUser(userDTO.getId());
+
+            userDTO.setUserPermission(userPermission);
+
+            return userDTO;
+        }
+        return null;
+    }
+
+    @Override
     public List<UserDTO> getUserByFilter(UserRequestDTO requestDTO) {
         return userRepository.getUserByFilter(requestDTO);
     }
@@ -94,6 +116,7 @@ public class UserServiceImpl implements UserService {
         try {
             UserEntity entity = new UserEntity();
             modelMapper.map(requestDTO, entity);
+            entity.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
             String imageUrl = cloudinaryService.uploadFile(image);
             if (StringUtils.isNotEmpty(imageUrl)) {
                 entity.setImage(imageUrl);
@@ -107,7 +130,7 @@ public class UserServiceImpl implements UserService {
             return 0;
 
         } catch (Exception e) {
-            return 0;
+            throw new RuntimeException();
         }
 
 
@@ -128,6 +151,8 @@ public class UserServiceImpl implements UserService {
 
             if (StringUtils.isNotEmpty(imageUrl)) entity.setImage(imageUrl);
         }
+
+        if (requestDTO.getPassword() != null) entity.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
 
         userPermissionService.update(requestDTO.getRemovedPermission()
                 , requestDTO.getAddedPermission()
@@ -157,7 +182,7 @@ public class UserServiceImpl implements UserService {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserEntity user = iUserRepository.findByUsername(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        UserEntity user = iUserRepository.findByUsernameAndStatus(authentication.getName(), UserStatus.ACTIVE.name()).orElseThrow(() -> new UsernameNotFoundException("Người dùng đã bị ngưng hoạt động hoặc sai username password"));
         return jwtUtilities.generateToken(user.getUsername());
     }
 
@@ -171,6 +196,71 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserEntity> findUserByUsername(String username) {
-        return iUserRepository.findByUsername(username);
+        return iUserRepository.findByUsernameAndStatus(username, UserStatus.ACTIVE.name());
+    }
+
+    @Override
+    public void changePassword(LoginDto loginDto) {
+
+        if (StringUtils.isEmpty(loginDto.getPassword())) return;
+
+        UserEntity userEntity = validateChangePassword(loginDto);
+
+        String encodedPassword = passwordEncoder.encode(loginDto.getPassword());
+
+        userEntity.setPassword(encodedPassword);
+
+        iUserRepository.save(userEntity);
+
+    }
+
+    @Override
+    public void updateProfile(UserRequestDTO requestDTO, MultipartFile newImage) {
+        Optional<UserEntity> optional = userRepository.findById(requestDTO.getId());
+
+        if (optional.isEmpty()) throw new RuntimeException("User not found");
+
+        UserEntity entity = optional.get();
+
+        modelMapper.map(requestDTO, entity);
+
+        if (newImage != null) {
+            String imageUrl = cloudinaryService.uploadFile(newImage);
+
+            if (StringUtils.isNotEmpty(imageUrl)) entity.setImage(imageUrl);
+        }
+
+        if (requestDTO.getPassword() != null) entity.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
+
+        userRepository.save(entity);
+
+    }
+
+    private UserEntity validateChangePassword(LoginDto loginDto) {
+        Optional<UserEntity> optional = iUserRepository.findByUsernameAndStatus(loginDto.getUsername(), UserStatus.ACTIVE.name());
+
+        if (optional.isEmpty()) throw new RuntimeException();
+        UserEntity userEntity = optional.get();
+
+        CustomUserDetails currentUserLogin = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (currentUserLogin.getRole().equals(Role.ROLE_ADMIN.name())
+                && userEntity.getRole().equals(Role.ROLE_ROOT.name()))
+            throw new RuntimeException();
+
+        if (currentUserLogin.getRole().equals(Role.ROLE_ADMIN.name())
+                && userEntity.getRole().equals(Role.ROLE_ADMIN.name())
+                && (!userEntity.getUsername().equals(currentUserLogin.getUsername()))
+        )
+            throw new RuntimeException();
+
+        if (currentUserLogin.getRole().equals(Role.ROLE_EMPLOYEE.name())
+                && (!userEntity.getRole().equals(Role.ROLE_EMPLOYEE.name()) || currentUserLogin.getUsername().equals(userEntity.getUsername()))
+        )
+            throw new RuntimeException();
+
+
+        return userEntity;
+
     }
 }

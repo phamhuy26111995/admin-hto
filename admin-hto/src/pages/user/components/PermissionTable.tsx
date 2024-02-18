@@ -13,7 +13,7 @@ const PermissionTable = (props: any) => {
   useEffect(() => {
 
     const transformedPermission = isEdit
-      ? transformPermissions(permissions)
+      ? transformPermissions(permissionListToCreate)
       : transformPermissions(permissionListToCreate);
 
     setData(transformedPermission);
@@ -134,6 +134,7 @@ const PermissionTable = (props: any) => {
 
       if (isEdit)
         currentUser.userPermission
+          .filter((el : any) => !el.code.startsWith("user"))
           .map((el: any) => el.code)
           .forEach((permission: string) => {
             const [codeBase, screen, action] = permission.split(".");

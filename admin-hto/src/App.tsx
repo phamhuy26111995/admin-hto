@@ -7,16 +7,23 @@ import {
   setShowNotification,
   setUserInfo,
 } from "./redux-slice/globalSlice";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useNavigate,
+  redirect,
+} from "react-router-dom";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import Login from "./pages/login/Login";
 import { MappingRoutes } from "./routes/MappingRoutes";
 import NotFoundPage from "./pages/result/NotFoundPage";
 import { fetchUserInfo } from "./redux-slice/userSlice";
+import { JWT_TOKEN } from "./consts/common";
 
 function App() {
   const [displayTheme, setDisplayTheme] = useState<boolean>(false);
-
+  const token = localStorage.getItem(JWT_TOKEN);
   const dispatch = useDispatch();
 
   const { userInfo, permissions } = useSelector(
@@ -24,27 +31,15 @@ function App() {
   );
 
   useEffect(() => {
-    // const token = localStorage.getItem("token");
-
-    // if (!token) return;
-
-    // const permissionDataString = localStorage.getItem("permissions");
-
-    getUserInfo();
-
-    // if (!permissionDataString) return;
-
-    // const permissionData = JSON.parse(permissionDataString);
-
-    // dispatch(setPermission(permissionData));
+    if (token) getUserInfo();
   }, []);
 
   async function getUserInfo() {
-    if (!userInfo) {
-      dispatch(fetchUserInfo({}));
+    if (!userInfo || permissions.length === 0) {
+      dispatch(fetchUserInfo("token"));
     }
   }
-  
+
   return (
     <AntApp>
       <ConfigProvider
@@ -54,50 +49,42 @@ function App() {
             : theme.defaultAlgorithm,
         }}
       >
-        {userInfo && (
-          <BrowserRouter>
-            <Routes>
+        <Routes>
+          <Route element={<PrivateRoutes setDisplayTheme={setDisplayTheme} />}>
+            <Route
+              key={"home"}
+              element={
+                permissions.length > 0 ? (
+                  MappingRoutes.get(permissions[0].code)?.component
+                ) : (
+                  <NotFoundPage />
+                )
+              }
+              path={"/"}
+            />
+            {permissions.map((el: any) => (
               <Route
-                element={<PrivateRoutes setDisplayTheme={setDisplayTheme} />}
-              >
-                <Route
-                  key={"home"}
-                  element={
-                    permissions.length > 0 ? (
-                      MappingRoutes.get(permissions[0].code)?.component
-                    ) : (
-                      <NotFoundPage />
-                    )
-                  }
-                  path={"/"}
-                />
-                {permissions.map((el: any) => (
-                  <Route
-                    key={el.code}
-                    element={
-                      MappingRoutes.get(el.code) ? (
-                        MappingRoutes.get(el.code).component
-                      ) : (
-                        <NotFoundPage />
-                      )
-                    }
-                    path={
-                      MappingRoutes.get(el.code) ? MappingRoutes.get(el.code).path : ""
-                    }
-                  />
-                ))}
+                key={el.code}
+                element={
+                  MappingRoutes.get(el.code) ? (
+                    MappingRoutes.get(el.code).component
+                  ) : (
+                    <NotFoundPage />
+                  )
+                }
+                path={
+                  MappingRoutes.get(el.code)
+                    ? MappingRoutes.get(el.code).path
+                    : ""
+                }
+              />
+            ))}
 
-                <Route
-                  key={"notfound"}
-                  element={<h1>Not Found</h1>}
-                  path={"*"}
-                />
-              </Route>
+            <Route key={"notfound"} element={<h1>Not Found</h1>} path={"*"} />
+          </Route>
 
-              <Route key={"Login"} element={<Login />} path={"/login"} />
-            </Routes>
-          </BrowserRouter>
-        )}
+          <Route key={"Login"} element={<Login />} path={"/login"} />
+        </Routes>
       </ConfigProvider>
     </AntApp>
   );

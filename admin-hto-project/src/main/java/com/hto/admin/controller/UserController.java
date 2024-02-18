@@ -37,6 +37,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserByFilter(requestDTO), HttpStatus.OK);
     }
 
+    @GetMapping("/get-by-username/{username}")
+    public UserDTO getByUsername(@PathVariable String username) {
+        return userService.getUserByUserName(username);
+    }
+
     @PostMapping(value = "/create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Long> createUser(@RequestPart("userRequestDTO") UserRequestDTO userRequestDTO, MultipartFile image) {
 

@@ -8,7 +8,8 @@ export const userServices  = {
     update,
     getByFilter,
     deleteUser,
-    uploadFile
+    uploadFile,
+    updateProfile
 }
 
 
@@ -28,6 +29,9 @@ function uploadFile(body : any) {
     return API_CALL.postFormData(API_URL.USER.UPLOAD, body);
 }
 
+function updateProfile(body : any) {
+    return API_CALL.putFormData(API_URL.USER.UPDATE_PROFILE,body);
+}
 
 
 function update(body : any) {

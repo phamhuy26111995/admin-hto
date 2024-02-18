@@ -1,5 +1,6 @@
-import { APP_CONFIG } from "@/consts/path";
-import { setPermission, setUserInfo } from "@/redux-slice/globalSlice";
+import { JWT_TOKEN } from "@/consts/common";
+import { APP_CONFIG, PAGE_URL } from "@/consts/path";
+import { fetchUserInfo } from "@/redux-slice/userSlice";
 import { MappingRoutes } from "@/routes/MappingRoutes";
 import authService from "@/services/auth/auth.service";
 import { App, Button, Form, Input } from "antd";
@@ -10,45 +11,35 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const dispatch = useDispatch();
   const { notification } = App.useApp();
-  const { permissions } = useSelector((state: any) => state.global);
+  const { permissions } = useSelector((state: any) => state.userSlice);
   const navigate = useNavigate();
   const [loginForm] = Form.useForm();
 
   useEffect(() => {
     if (permissions.length > 0) {
-      const path = MappingRoutes.get(permissions[0])?.path || "/login";
-
+      const path = MappingRoutes.get(permissions[0].code)?.path;
       navigate(path);
     }
   }, [permissions]);
 
   async function signIn() {
     const formValue = await loginForm.validateFields();
+    let token = "";
+    try {
+      token = await authService.login({
+        username: formValue.username,
+        password: formValue.password,
+      });
 
-    const signInResponse = await authService.fakeLogin({
-      username: formValue.username,
-      password: formValue.password,
-    });
-
-    if (signInResponse === "LOGIN_FAILED") {
+      localStorage.setItem(JWT_TOKEN, token);
+    } catch (error : any) {
       notification.error(
-        APP_CONFIG.notificationConfig("Username hoặc password không chính xác")
+        APP_CONFIG.notificationConfig("Sai username hoặc password")
       );
       return;
     }
 
-    const data = await authService.getUserAdmin();
-
-    if (!data) return;
-
-    const permissions = data.userPermission.map(
-      (permission: any) => permission.code
-    );
-
-    localStorage.setItem("token", signInResponse);
-    localStorage.setItem("permissions", JSON.stringify(permissions));
-    dispatch(setUserInfo(data));
-    dispatch(setPermission(permissions));
+    dispatch(fetchUserInfo(formValue.username));
   }
   return (
     <React.Fragment>

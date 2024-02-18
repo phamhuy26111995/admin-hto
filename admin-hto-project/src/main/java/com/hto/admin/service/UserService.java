@@ -16,6 +16,8 @@ public interface UserService {
 
     public UserDTO getUserAdmin();
 
+    public UserDTO getUserByUserName(String username);
+
 
     public List<UserDTO> getUserByFilter(UserRequestDTO requestDTO);
 
@@ -30,4 +32,8 @@ public interface UserService {
     String fakeLogin(LoginDto loginDto);
 
     Optional<UserEntity> findUserByUsername(String username);
+
+    void changePassword(LoginDto loginDto);
+
+    void updateProfile(UserRequestDTO requestDTO, MultipartFile newImage);
 }

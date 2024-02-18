@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(Consts.PREFIX_ADMIN + "/permission")
+@RequestMapping(Consts.PREFIX_ROOT + "/permission")
 public class PermissionController {
 
     @Autowired

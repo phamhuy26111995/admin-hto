@@ -27,8 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryEntity> getAllCategory() {
-        List<CategoryEntity> categoryEntities = categoryRepository.findAllNotDeleted();
-        return categoryEntities;
+        return categoryRepository.findAllNotDeleted();
     }
 
     @Override

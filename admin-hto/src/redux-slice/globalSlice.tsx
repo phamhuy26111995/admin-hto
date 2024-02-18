@@ -10,33 +10,12 @@ const initialState = {
   permissions: [],
 };
 
-export const getFakeUserAdmin: any = createAsyncThunk(
-  "global/getFakeUserAdmin",
-  async (id: number, thunkAPI) => {
-    try {
-      thunkAPI.dispatch(showHideLoading(true));
-      const response = await authService.getUserAdmin();
-      thunkAPI.dispatch(showHideLoading(false));
-      return response;
-    } catch (err) {
-      thunkAPI.dispatch(showHideLoading(false));
-      notification.error(APP_CONFIG.notificationConfig("Có lỗi xảy ra"));
-    }
-  }
-);
-
 export const globalSlice: Slice = createSlice({
   name: "global",
   initialState,
   reducers: {
     showHideLoading: (state, action) => {
       state.loading = action.payload;
-    },
-    setUserInfo: (state, { payload }) => {
-      state.userInfo = payload;
-    },
-    setPermission: (state, { payload }) => {
-      state.permissions = payload;
     },
   },
   extraReducers(builder) {

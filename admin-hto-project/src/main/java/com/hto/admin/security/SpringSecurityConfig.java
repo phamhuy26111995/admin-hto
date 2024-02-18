@@ -1,43 +1,35 @@
 package com.hto.admin.security;
 
+import com.hto.admin.consts.Consts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@Profile("dev")
 @RequiredArgsConstructor
 public class SpringSecurityConfig {
-    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**",
-            "/v2/api-docs",
-            "/v3/api-docs",
-            "/v3/api-docs/**",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui/**",
-            "/webjars/**",
-            "/swagger-ui.html"};
+
+
+    private static final String ROOT_ENDPOINT = "/" + Consts.PREFIX_ROOT + "/.*";
+    private static final String ADMIN_ENDPOINT = "/" + Consts.PREFIX_ADMIN + "/.*";
+    private static final String AUTHENTICATE_ENDPOINT = "/" + Consts.PREFIX_ADMIN + "/login/authenticate";
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -50,9 +42,12 @@ public class SpringSecurityConfig {
                         .configurationSource(apiConfigurationSource())
                 )
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(request -> request.getRequestURI().matches("/api/v1/admin/login/authenticate")).permitAll()
-                        .anyRequest().authenticated()
+                                .requestMatchers(request -> request.getRequestURI().matches(AUTHENTICATE_ENDPOINT)).permitAll()
+                                .requestMatchers(request -> request.getRequestURI().matches(ROOT_ENDPOINT)).hasRole("ROOT")
+//                        .requestMatchers(request -> request.getRequestURI().matches(ADMIN_ENDPOINT)).hasAnyRole("ROOT", "ADMIN", "EMPLOYEE")
+                                .anyRequest().authenticated()
                 )
+
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
@@ -61,7 +56,7 @@ public class SpringSecurityConfig {
 
     CorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -77,6 +72,6 @@ public class SpringSecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 }

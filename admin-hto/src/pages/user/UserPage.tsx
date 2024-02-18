@@ -4,30 +4,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
+import { DATE_FORMAT } from "@/consts/common";
+import { PAGE_URL } from "@/consts/path";
 
-const data = [
-  {
-    key: "1",
-    name: "Phạm Huy",
-    age: 18,
-    address: "Chợ An Nhơn",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Trần Anh Thy",
-    age: 27,
-    address: "Chợ Bà Chiểu",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Đan Trường",
-    age: 30,
-    address: "Chợ Cầu Muối",
-    tags: ["cool", "teacher"],
-  },
-];
+
 
 const UserPage = () => {
   const navigate = useNavigate();
@@ -74,7 +55,9 @@ const UserPage = () => {
       <Table size="small" dataSource={userList}>
         <Table.Column dataIndex={"code"} title="Mã nhân viên" />
         <Table.Column dataIndex={"name"} title="Tên nhân viên" />
-        <Table.Column dataIndex={"birthday"} title="Ngày sinh" />
+        <Table.Column dataIndex={"birthday"} title="Ngày sinh" render={(columnsData : any) => (
+          <div>{dayjs(columnsData).format(DATE_FORMAT.DAY_MONTH_YEAR)}</div>
+        )} />
         <Table.Column dataIndex={"phone"} title="Số điện thoại" />
         <Table.Column dataIndex={"email"} title="Email" />
         <Table.Column dataIndex={"username"} title="Username" />
@@ -84,7 +67,7 @@ const UserPage = () => {
             <Space size="middle">
               <Button
                 className="bg-cyan-400 text-white"
-                onClick={() => navigate(`/user/${record.id}`)}
+                onClick={() => navigate(`${PAGE_URL.USER.INDEX}/${record.id}`)}
               >
                 Chỉnh sửa thông tin user
               </Button>

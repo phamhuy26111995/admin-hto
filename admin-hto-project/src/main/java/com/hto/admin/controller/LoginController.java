@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(Consts.PREFIX_ADMIN + "/login")
 public class LoginController {
 
-    @Autowired
-    private final AuthenticationManager authenticationManager;
+
+    private AuthenticationManager authenticationManager;
     @Autowired
     private UserService userService;
 
     public LoginController(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
+
 
     @PostMapping("/fake-login")
     public String fakeLogin(@RequestBody LoginDto loginDto) {
@@ -31,6 +32,7 @@ public class LoginController {
     public UserDTO getUserAdmin() {
         return userService.getUserAdmin();
     }
+
 
     @PostMapping("/authenticate")
     public String authenticate(@RequestBody LoginDto loginDto) {

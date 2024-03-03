@@ -66,6 +66,14 @@ export const API_URL = {
     UPDATE_PROFILE: `${api_url}/${public_prefix}/user-profile/update`,
     DELETE: `${api_url}/${prefix}/user/delete`,
   },
+
+  PERMISSION: {
+    GET_ALL: `${api_url}/${root_prefix}/permission/get-all`,
+    GET_BY_ID: `${api_url}/${root_prefix}/permission/get-by-id/:id`,
+    CREATE: `${api_url}/${root_prefix}/permission/create`,
+    UPDATE: `${api_url}/${root_prefix}/permission/update`,
+    DELETE: `${api_url}/${root_prefix}/permission/delete/:id`,
+  },
 };
 
 export const APP_CONFIG = {

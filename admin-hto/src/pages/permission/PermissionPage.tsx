@@ -1,36 +1,39 @@
 import React, { useState } from "react";
-import { App, Button, Space, Table, Tabs, Tag } from "antd";
-import type { ColumnsType } from "antd/es/table";
-import {
-  AppleOutlined,AndroidOutlined
-} from "@ant-design/icons";
-import ModalPermission from "@/components/page/permission/ModalPermission";
-import GroupPermission from "@/components/page/permission/group/GroupPermission";
-import UserPermission from "@/components/page/permission/user/UserPermission";
-
+import { App, Button, Card, Space, Table, Tabs, Tag } from "antd";
+import PermissionTable from "./components/PermissionTable";
+import PermissionModal from "./components/PerrmissionModal";
 
 const PermissionPage = () => {
+  const [permissionId, setPermissionId] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <React.Fragment>
-      {/* <Tabs
-    defaultActiveKey={"1"}
-    items={[<GroupPermission />, <UserPermission />].map((component, i) => {
-      const id = String(i + 1);
-
-      return {
-        label: (
-          <span>
-            {id === "1" ? "Phân quyền theo nhóm" : "Phần quyền theo user"}
-          </span>
-        ),
-        key: id,
-        children: component,
-      };
-    })}
-  /> */}
-
-    <h1>Permission Page</h1>
+      <Card>
+        <div className="flex justify-end mb-3">
+          <Button
+            onClick={() => {
+              setIsOpen(true);
+              setPermissionId(0);
+            }}
+          >
+            Tạo mới
+          </Button>
+        </div>
+        <PermissionTable
+          setPermissionId={setPermissionId}
+          setIsOpenModal={setIsOpen}
+          permissionId={permissionId}
+        />
+        <PermissionModal
+          permissionId={permissionId}
+          setPermissionId={setPermissionId}
+          openModalState={{
+            isOpen: isOpen,
+            setIsOpen: setIsOpen,
+          }}
+        />
+      </Card>
     </React.Fragment>
   );
 };

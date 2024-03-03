@@ -117,10 +117,10 @@ export const API_CALL = {
 
   get: async (url : string, body : any) => {
     let token = localStorage.getItem(JWT_TOKEN);
-    // if (!token) {
-    //   redirect(PAGE_URL.LOGIN);
-    //   return;
-    // }
+    if (!token) {
+      redirect(PAGE_URL.LOGIN);
+      return;
+    }
     let response = null;
     try {
       response = await axios({

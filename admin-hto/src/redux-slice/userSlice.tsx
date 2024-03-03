@@ -141,13 +141,13 @@ const userSlice: Slice = createSlice({
           : [],
         };
         state.permissions = payload.userPermission;
-        state.permissionListToCreate = payload.userPermission.filter((el : any) => !el.code.startsWith("user") && !el.code.startsWith("profile"));
+        state.permissionListToCreate = payload.userPermission.filter((el : any) => !el.code.startsWith("user") && !el.code.startsWith("profile") && !el.code.startsWith("permission"));
       })
 
       .addCase(getUserById.fulfilled, (state: any, { payload }) => {
         state.currentUser = {
           ...payload,
-          userPermission : payload.userPermission.filter((el : any) => !el.code.startsWith("user") && !el.code.startsWith("profile")),
+          userPermission : payload.userPermission.filter((el : any) => !el.code.startsWith("user") && !el.code.startsWith("profile") && !el.code.startsWith("permission")),
           fileList: payload.image
             ? [
                 {

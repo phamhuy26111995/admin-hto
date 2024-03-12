@@ -25,7 +25,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public List<PermissionDTO> getAllPermission() {
         List<PermissionDTO> dtos = new ArrayList<>();
-        List<PermissionEntity> entities = permissionRepository.findAll();
+        List<PermissionEntity> entities = permissionRepository.findByDeletedIsFalse();
 
         entities.forEach(el -> {
             PermissionDTO dto = new PermissionDTO();
@@ -42,12 +42,26 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    public PermissionDTO getPermissionById(long permissionId) {
+        Optional<PermissionEntity> optional = permissionRepository.findById(permissionId);
+
+        if (optional.isPresent()) {
+            PermissionDTO dto = new PermissionDTO();
+            modelMapper.map(optional.get(), dto);
+
+            return dto;
+        }
+
+        return null;
+    }
+
+    @Override
     public long createPermission(PermissionRequestDTO permissionRequestDTO) {
         PermissionEntity entity = new PermissionEntity();
         modelMapper.getConfiguration().isSkipNullEnabled();
         modelMapper.map(permissionRequestDTO, entity);
 
-        PermissionEntity savedEntity =  permissionRepository.save(entity);
+        PermissionEntity savedEntity = permissionRepository.save(entity);
 
         return savedEntity.getId();
     }
@@ -56,7 +70,7 @@ public class PermissionServiceImpl implements PermissionService {
     public long updatePermission(PermissionRequestDTO permissionRequestDTO) {
         Optional<PermissionEntity> optionalPermission = permissionRepository.findById(permissionRequestDTO.getId());
         optionalPermission.ifPresent(permissionEntity -> {
-            modelMapper.map(permissionRequestDTO , permissionEntity);
+            modelMapper.map(permissionRequestDTO, permissionEntity);
             permissionRepository.save(permissionEntity);
         });
         return optionalPermission.isPresent() ? optionalPermission.get().getId() : 0;
@@ -66,9 +80,12 @@ public class PermissionServiceImpl implements PermissionService {
     public void deletePermission(long id) {
         Optional<PermissionEntity> optionalPermission = permissionRepository.findById(id);
 
+
         optionalPermission.ifPresent(permissionEntity -> {
             permissionEntity.setDeleted(false);
             permissionRepository.save(permissionEntity);
         });
     }
+
+
 }

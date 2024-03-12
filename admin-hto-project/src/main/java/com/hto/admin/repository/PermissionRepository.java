@@ -16,7 +16,9 @@ public interface PermissionRepository extends JpaRepository<PermissionEntity, Lo
     @Query("SELECT new com.hto.admin.dto.PermissionDTO(p.id, p.title, p.code,p.description,p.status) " +
             " FROM UserPermissionEntity up JOIN UserEntity u " +
             " ON up.userId = u.id " +
-            " JOIN PermissionEntity p ON up.permissionId = p.id WHERE u.id = :userId AND p.status = 'ACTIVE' and p.isDeleted = FALSE")
+            " JOIN PermissionEntity p ON up.permissionId = p.id WHERE u.id = :userId AND p.status = 'ACTIVE' and p.deleted = FALSE")
     List<PermissionDTO> getPermissionByUser(@Param("userId") long userId);
+
+    List<PermissionEntity> findByDeletedIsFalse();
 
 }

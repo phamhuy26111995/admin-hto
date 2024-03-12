@@ -16,6 +16,6 @@ public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
     @Query("SELECT new com.hto.admin.dto.GroupDTO(g.id, g.title) " +
             " FROM UserGroupEntity ug JOIN UserEntity u " +
             " ON ug.userId = u.id " +
-            " JOIN GroupEntity g ON ug.groupId = g.id WHERE u.id = :userId AND g.status = 'ACTIVE' and g.isDeleted = FALSE")
+            " JOIN GroupEntity g ON ug.groupId = g.id WHERE u.id = :userId AND g.status = 'ACTIVE' and g.deleted = FALSE")
     public List<GroupDTO> getGroupByUser(@Param("userId") long userId);
 }

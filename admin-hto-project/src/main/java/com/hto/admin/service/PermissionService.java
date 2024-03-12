@@ -2,7 +2,6 @@ package com.hto.admin.service;
 
 import com.hto.admin.dto.PermissionDTO;
 import com.hto.admin.dto.PermissionRequestDTO;
-import com.hto.admin.entity.PermissionEntity;
 
 import java.util.List;
 
@@ -11,6 +10,7 @@ public interface PermissionService {
 
     public List<PermissionDTO> getPermissionByUser(long userId);
 
+    public PermissionDTO getPermissionById(long permissionId);
 
     public long createPermission(PermissionRequestDTO permissionRequestDTO);
 

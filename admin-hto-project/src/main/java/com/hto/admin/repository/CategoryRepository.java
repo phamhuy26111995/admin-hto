@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> {
 
-    @Query("SELECT e FROM CategoryEntity e WHERE e.isDeleted = false")
+    @Query("SELECT e FROM CategoryEntity e WHERE e.deleted = false")
     List<CategoryEntity> findAllNotDeleted();
 }

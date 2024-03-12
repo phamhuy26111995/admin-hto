@@ -15,6 +15,7 @@ public class TabContentDTO extends BaseDTO{
     private long productTabId;
     private String type;
 
+
     public TabContentDTO(long id,String title, String content, long productTabId, String type) {
         this.id = id;
         this.title = title;

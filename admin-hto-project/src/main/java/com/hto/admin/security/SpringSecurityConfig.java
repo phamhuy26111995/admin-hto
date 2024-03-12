@@ -27,8 +27,9 @@ import java.util.List;
 public class SpringSecurityConfig {
 
 
-    private static final String ROOT_ENDPOINT = "/" + Consts.PREFIX_ROOT + "/.*";
     private static final String ADMIN_ENDPOINT = "/" + Consts.PREFIX_ADMIN + "/.*";
+    private static final String ROOT_ENDPOINT = "/" + Consts.PREFIX_ROOT + "/.*";
+    private static final String PUBLIC_ENDPOINT = "/" + Consts.PREFIX_PUBLIC + "/.*";
     private static final String AUTHENTICATE_ENDPOINT = "/" + Consts.PREFIX_ADMIN + "/login/authenticate";
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -43,6 +44,7 @@ public class SpringSecurityConfig {
                 )
                 .authorizeHttpRequests((requests) -> requests
                                 .requestMatchers(request -> request.getRequestURI().matches(AUTHENTICATE_ENDPOINT)).permitAll()
+                                .requestMatchers(request -> request.getRequestURI().matches(PUBLIC_ENDPOINT)).permitAll()
                                 .requestMatchers(request -> request.getRequestURI().matches(ROOT_ENDPOINT)).hasRole("ROOT")
 //                        .requestMatchers(request -> request.getRequestURI().matches(ADMIN_ENDPOINT)).hasAnyRole("ROOT", "ADMIN", "EMPLOYEE")
                                 .anyRequest().authenticated()

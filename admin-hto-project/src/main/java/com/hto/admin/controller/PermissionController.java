@@ -25,6 +25,12 @@ public class PermissionController {
         return new ResponseEntity<>(permissionService.getAllPermission(), HttpStatus.OK);
     }
 
+    @GetMapping("/get-by-id/{id}")
+    public ResponseEntity<PermissionDTO> getById(@PathVariable long id) {
+
+        return new ResponseEntity<>(permissionService.getPermissionById(id), HttpStatus.OK);
+    }
+
 
     @PostMapping("/create")
     public ResponseEntity<Long> createPermission(@RequestBody PermissionRequestDTO permissionRequestDTO) {
@@ -39,8 +45,8 @@ public class PermissionController {
         return new ResponseEntity<>(permissionService.updatePermission(permissionRequestDTO), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity deletePermission(@RequestParam("id") long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deletePermission(@PathVariable long id) {
 
         permissionService.deletePermission(id);
 

@@ -26,26 +26,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SpringSecurityConfig {
 
-
     private static final String ADMIN_ENDPOINT = "/" + Consts.PREFIX_ADMIN + "/.*";
     private static final String ROOT_ENDPOINT = "/" + Consts.PREFIX_ROOT + "/.*";
     private static final String PUBLIC_ENDPOINT = "/" + Consts.PREFIX_PUBLIC + "/.*";
     private static final String AUTHENTICATE_ENDPOINT = "/" + Consts.PREFIX_ADMIN + "/login/authenticate";
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors((cors) -> cors
                         .configurationSource(apiConfigurationSource())
                 )
                 .authorizeHttpRequests((requests) -> requests
-                                .requestMatchers(request -> request.getRequestURI().matches(AUTHENTICATE_ENDPOINT)).permitAll()
-                                .requestMatchers(request -> request.getRequestURI().matches(PUBLIC_ENDPOINT)).permitAll()
-                                .requestMatchers(request -> request.getRequestURI().matches(ROOT_ENDPOINT)).hasRole("ROOT")
+                                .requestMatchers(request -> request.getRequestURI().matches(request.getContextPath() + AUTHENTICATE_ENDPOINT)).permitAll()
+                                .requestMatchers(request -> request.getRequestURI().matches(request.getContextPath() + PUBLIC_ENDPOINT)).permitAll()
+                                .requestMatchers(request -> request.getRequestURI().matches(request.getContextPath() + ROOT_ENDPOINT)).hasRole("ROOT")
 //                        .requestMatchers(request -> request.getRequestURI().matches(ADMIN_ENDPOINT)).hasAnyRole("ROOT", "ADMIN", "EMPLOYEE")
                                 .anyRequest().authenticated()
                 )
@@ -56,6 +54,7 @@ public class SpringSecurityConfig {
 
     }
 
+    @Bean
     CorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(List.of("*"));

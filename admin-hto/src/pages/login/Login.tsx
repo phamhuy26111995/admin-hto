@@ -41,6 +41,13 @@ const Login = () => {
 
     dispatch(fetchUserInfo(formValue.username));
   }
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      signIn();
+    }
+  };
+
   return (
     <React.Fragment>
       <div className="min-h-screen h-14 bg-white flex items-center justify-center">
@@ -52,7 +59,7 @@ const Login = () => {
             />
           </div>
           <div>
-            <Form form={loginForm} layout="vertical">
+            <Form form={loginForm} onKeyUp={handleKeyPress} layout="vertical">
               <Form.Item label="Username" name={"username"}>
                 <Input />
               </Form.Item>

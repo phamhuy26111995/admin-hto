@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { App, Button, Card, Space, Table, Tabs, Tag } from "antd";
 import PermissionTable from "./components/PermissionTable";
 import PermissionModal from "./components/PerrmissionModal";
+import {Link} from "react-router-dom";
+import {PlusCircleOutlined} from "@ant-design/icons";
 
 const PermissionPage = () => {
   const [permissionId, setPermissionId] = useState(0);
@@ -11,13 +13,13 @@ const PermissionPage = () => {
     <React.Fragment>
       <Card>
         <div className="flex justify-end mb-3">
-          <Button
-            onClick={() => {
+          <Button className={'bg-lime-500 text-gray flex items-center'}
+                  onClick={() => {
               setIsOpen(true);
               setPermissionId(0);
-            }}
+                  }}
           >
-            Tạo mới
+                <PlusCircleOutlined/> Tạo mới
           </Button>
         </div>
         <PermissionTable

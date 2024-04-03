@@ -15,7 +15,7 @@ import {
   Button,
   Select,
 } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import {PlusCircleOutlined, SearchOutlined} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import Table, { ColumnsType } from "antd/es/table";
 import React, { useEffect, useRef, useState } from "react";
@@ -123,10 +123,16 @@ const ProductPage = () => {
     );
   }
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      onSearch();
+    }
+  };
+
   return (
     <React.Fragment>
       <Card className="mb-4">
-        <Form form={form}>
+        <Form form={form} onKeyUp={handleKeyPress}>
           <Flex gap={50}>
             <Form.Item label="Mã sản phẩm" name={"code"}>
               <Input />
@@ -157,12 +163,12 @@ const ProductPage = () => {
       </Card>
       <Card>
         <Flex className="mb-5" justify="end">
-          <Button
+          <Button className={'bg-lime-500 text-gray flex items-center'}
             onClick={() =>
               navigate(PAGE_URL.PRODUCT.DETAIL.replace(":id", "new"))
             }
           >
-            Thêm mới
+            <PlusCircleOutlined/> Tạo mới
           </Button>
         </Flex>
         <Table columns={columns} dataSource={productList} />

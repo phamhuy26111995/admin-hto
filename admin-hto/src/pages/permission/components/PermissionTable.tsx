@@ -62,7 +62,19 @@ function PermissionTable({
         <Column dataIndex={"code"} title={"Mã Quyền"} />
 
         <Column dataIndex={"description"} title={"Mô tả"} />
-        <Column dataIndex={"status"} title={"Trạng thái"} />
+        <Column dataIndex={"status"} className={"font-bold"} title={"Trạng thái"}
+                render={(columnData: any) => {
+                  switch (columnData) {
+                    case 'ACTIVE':
+                      return <div className={"text-green-600"}>{columnData}</div>
+                    case 'INACTIVE':
+                      return <div className={"text-orange-500"}>{columnData}</div>
+                    default:
+                      return <div>{columnData}</div>
+                  }
+                }
+          }
+        />
 
         <Column
           dataIndex={"createdAt"}

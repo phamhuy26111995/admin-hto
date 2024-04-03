@@ -78,7 +78,7 @@ function ProfilePage() {
             </Col>
 
             <Col span={8}>
-              <Form.Item name={"phone"} label="Số điện thoai">
+              <Form.Item name={"phone"} label="Số điện thoại">
                 <Input />
               </Form.Item>
             </Col>

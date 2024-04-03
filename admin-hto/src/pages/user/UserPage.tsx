@@ -1,14 +1,13 @@
-import { getUserByFilter } from "@/redux-slice/userSlice";
-import { Button, Card, Flex, Form, Input, Space, Table } from "antd";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { SearchOutlined } from "@ant-design/icons";
+import {getUserByFilter} from "@/redux-slice/userSlice";
+import {Button, Card, Flex, Form, Input, Space, Table} from "antd";
+import React, {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {Link, useNavigate} from "react-router-dom";
+import {PlusCircleOutlined, SearchOutlined, EditOutlined, FormOutlined, DeleteOutlined} from "@ant-design/icons";
 import dayjs from "dayjs";
-import { DATE_FORMAT } from "@/consts/common";
-import { PAGE_URL } from "@/consts/path";
-
-
+import {DATE_FORMAT} from "@/consts/common";
+import {PAGE_URL} from "@/consts/path";
+import './skin/UserPage.scss'
 
 const UserPage = () => {
   const navigate = useNavigate();
@@ -28,10 +27,16 @@ const UserPage = () => {
     dispatch(getUserByFilter(formValue))
   }
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      onSearch();
+    }
+  };
+
   return (
     <React.Fragment>
       <Card className="mb-4">
-        <Form form={form}>
+        <Form form={form} onKeyUp={handleKeyPress}>
           <Flex gap={50}>
             <Form.Item label="Mã nhân viên" name={"code"}>
               <Input />
@@ -47,7 +52,11 @@ const UserPage = () => {
             </Form.Item>
 
             <Button icon={<SearchOutlined />} onClick={onSearch}>
-              Tìm kiếm
+               Tìm kiếm
+            </Button>
+
+            <Button  className={'bg-lime-500 text-gray'}  >
+              <Link to={"/user/new"}><PlusCircleOutlined/> Tạo mới</Link>
             </Button>
           </Flex>
         </Form>
@@ -64,14 +73,25 @@ const UserPage = () => {
         <Table.Column
           title="Hành động"
           render={(_, record: any) => (
-            <Space size="middle">
-              <Button
-                className="bg-cyan-400 text-white"
-                onClick={() => navigate(`${PAGE_URL.USER.INDEX}/${record.id}`)}
-              >
-                Chỉnh sửa thông tin user
-              </Button>
-            </Space>
+            <>
+              <Space size="middle">
+                <Button
+                    className={'border-none'}
+                    onClick={() => navigate(`${PAGE_URL.USER.INDEX}/${record.id}`)}
+                >
+                  <FormOutlined className={"text-amber-500"} />
+                </Button>
+              </Space>
+              <Space size="middle">
+                <Button
+                    className={'border-none'}
+                    onClick={() => navigate(`${PAGE_URL.USER.INDEX}/${record.id}`)}
+                >
+                  <DeleteOutlined className={"text-red-600"} />
+                </Button>
+              </Space>
+            </>
+
           )}
         />
       </Table>

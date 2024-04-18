@@ -3,7 +3,6 @@ package com.hto.admin.controller;
 import com.hto.admin.consts.Consts;
 import com.hto.admin.dto.CategoryDTO;
 import com.hto.admin.dto.CategoryRequestDTO;
-import com.hto.admin.entity.CategoryEntity;
 import com.hto.admin.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<CategoryEntity>> getListCategory() {
+    public ResponseEntity<List<CategoryDTO>> getListCategory() {
 
         return new ResponseEntity<>(categoryService.getAllCategory(), HttpStatus.OK);
     }

@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface CategoryService {
-    public List<CategoryEntity> getAllCategory();
+    public List<CategoryDTO> getAllCategory();
 
     public CategoryDTO getById(long id);
 

@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CloudinaryService cloudinaryService;
 
     @Override
-    public List<CategoryEntity> getAllCategory() {
+    public List<CategoryDTO> getAllCategory() {
         return categoryRepository.findAllNotDeleted();
     }
 

@@ -1,9 +1,10 @@
 import { DATE_FORMAT } from "@/consts/common";
 import { permissionSerivces } from "@/services/permission/permission_services";
-import { Table } from "antd";
-import { EyeOutlined } from "@ant-design/icons";
+import {Button, Table} from "antd";
+import {EyeOutlined, FormOutlined} from "@ant-design/icons";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
+import {PAGE_URL} from "@/consts/path";
 
 const { Column } = Table;
 
@@ -45,17 +46,6 @@ function PermissionTable({
     <React.Fragment>
       <Table dataSource={permissions} size="small">
         <Column dataIndex={"numberNo"} title={"STT"} />
-        <Column
-          title={"Action"}
-          render={(_, record: any) => (
-            <div
-              className="cursor-pointer text-lg "
-              onClick={() => handleAction(record.id)}
-            >
-              <EyeOutlined />
-            </div>
-          )}
-        />
 
         <Column dataIndex={"title"} title={"Tên Quyền"} />
 
@@ -97,6 +87,17 @@ function PermissionTable({
           render={(columnData: any) => (
             <div>{dayjs(columnData).format(DATE_FORMAT.DAY_MONTH_YEAR)}</div>
           )}
+        />
+        <Column
+            title={"Hành động"}
+            render={(_, record: any) => (
+                <Button
+                    className={'border-none'}
+                    onClick={() => handleAction(record.id)}
+                >
+                  <FormOutlined className={"text-amber-500"} />
+                </Button>
+            )}
         />
       </Table>
     </React.Fragment>

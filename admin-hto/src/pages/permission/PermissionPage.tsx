@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { App, Button, Card, Space, Table, Tabs, Tag } from "antd";
+import {App, Button, Card, Flex, Space, Table, Tabs, Tag} from "antd";
 import PermissionTable from "./components/PermissionTable";
 import PermissionModal from "./components/PerrmissionModal";
 import {Link} from "react-router-dom";
@@ -11,17 +11,21 @@ const PermissionPage = () => {
 
   return (
     <React.Fragment>
+        <Card>
+            <Flex justify={"space-between"}>
+                <span></span>
+                <Button className={'bg-lime-500 text-gray flex items-center'}
+                        onClick={() => {
+                            setIsOpen(true);
+                            setPermissionId(0);
+                        }}
+                >
+                    <PlusCircleOutlined/> Tạo mới
+                </Button>
+            </Flex>
+        </Card>
       <Card>
-        <div className="flex justify-end mb-3">
-          <Button className={'bg-lime-500 text-gray flex items-center'}
-                  onClick={() => {
-              setIsOpen(true);
-              setPermissionId(0);
-                  }}
-          >
-                <PlusCircleOutlined/> Tạo mới
-          </Button>
-        </div>
+
         <PermissionTable
           setPermissionId={setPermissionId}
           setIsOpenModal={setIsOpen}

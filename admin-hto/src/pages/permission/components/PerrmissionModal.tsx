@@ -80,17 +80,19 @@ function PermissionModal(props: any) {
         onCancel={() => setIsOpen(false)}
         open={isOpen}
         footer={[
-            <Button key="back" onClick={() => setIsOpen(false)}>
+            <Button key="back" danger type="primary" onClick={() => setIsOpen(false)}>
             Hủy
           </Button>,
           <Popconfirm
             key="confirm"
             title="Bạn có chắc là thiết lập thay đổi"
             onConfirm={submitForm}
-            okText="Đồng ý"
+            okText={ <span key="back" className={"text-slate-950"} >
+                Đồng ý
+            </span>}
             cancelText="Hủy"
           >
-            <Button type="primary">Đồng ý</Button>
+            <Button type="default" >Đồng ý</Button>
           </Popconfirm>,
         ]}
         title={"Tạo mới quyền"}

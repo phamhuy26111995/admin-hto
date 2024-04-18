@@ -15,7 +15,7 @@ import {
   Button,
   Select,
 } from "antd";
-import {PlusCircleOutlined, SearchOutlined} from "@ant-design/icons";
+import {DeleteOutlined, PlusCircleOutlined, SearchOutlined} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import Table, { ColumnsType } from "antd/es/table";
 import React, { useEffect, useRef, useState } from "react";
@@ -70,10 +70,16 @@ const ProductPage = () => {
     {
       title: "Hành động",
       key: "action",
-      render: (_: any, record: any) => (
+      render: (_: any) => (
         <Space size="middle">
-          <a>Delete</a>
-          <a>Ngưng hoạt động</a>
+          <a className={"text-amber-400"}>Ngưng hoạt động</a>
+          <Button
+              className={'border-none'}
+              onClick={() =>{}}
+              title={"Xóa"}
+          >
+            <DeleteOutlined className={"text-red-600"}  />
+          </Button>
         </Space>
       ),
     },
@@ -158,19 +164,17 @@ const ProductPage = () => {
             <Button icon={<SearchOutlined />} onClick={onSearch}>
               Tìm kiếm
             </Button>
+            <Button className={'bg-lime-500 text-gray flex items-center'}
+                    onClick={() =>
+                        navigate(PAGE_URL.PRODUCT.DETAIL.replace(":id", "new"))
+                    }
+            >
+              <PlusCircleOutlined/> Tạo mới
+            </Button>
           </Flex>
         </Form>
       </Card>
       <Card>
-        <Flex className="mb-5" justify="end">
-          <Button className={'bg-lime-500 text-gray flex items-center'}
-            onClick={() =>
-              navigate(PAGE_URL.PRODUCT.DETAIL.replace(":id", "new"))
-            }
-          >
-            <PlusCircleOutlined/> Tạo mới
-          </Button>
-        </Flex>
         <Table columns={columns} dataSource={productList} />
       </Card>
     </React.Fragment>

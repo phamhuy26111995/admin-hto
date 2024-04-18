@@ -64,12 +64,12 @@ const UserPage = () => {
       <Table size="small" dataSource={userList}>
         <Table.Column dataIndex={"code"} title="Mã nhân viên" />
         <Table.Column dataIndex={"name"} title="Tên nhân viên" />
+        <Table.Column dataIndex={"username"} title="Username" />
         <Table.Column dataIndex={"birthday"} title="Ngày sinh" render={(columnsData : any) => (
           <div>{dayjs(columnsData).format(DATE_FORMAT.DAY_MONTH_YEAR)}</div>
         )} />
         <Table.Column dataIndex={"phone"} title="Số điện thoại" />
         <Table.Column dataIndex={"email"} title="Email" />
-        <Table.Column dataIndex={"username"} title="Username" />
         <Table.Column
           title="Hành động"
           render={(_, record: any) => (
